@@ -1,7 +1,7 @@
 # GIO Kerala rebuild: local setup
 
 - **Date:** 27 October 2026 (updated 28 October 2026)
-- **Status:** the local workspace exists at `C:\dev\gio-kerala` (branch `phase-1/foundation-spikes`); still no Cloudflare resources and nothing deployed. Installed versions, test results and deviations from the steps below are in `docs/architecture/PHASE_1_SPIKE_RESULTS.md`.
+- **Status:** the local workspace exists at `C:\dev\gio-kerala` (phase 1 on branch `phase-1/foundation-spikes`; the legacy URL and media layer on `phase-2/legacy-url-layer`). There are still no Cloudflare resources and nothing is deployed. Installed versions, test results and deviations from the steps below are in `docs/architecture/PHASE_1_SPIKE_RESULTS.md`; the custom Worker entry is described in `docs/architecture/LEGACY_URL_AND_MEDIA_LAYER.md`.
 - **Read first:** `docs/audit/04-STATUS-AND-DECISIONS.md` (blocking decisions), `docs/audit/05-MIGRATION-DESIGN.md` (architecture), `docs/audit/d1-schema-proposal.sql`.
 
 Everything in this file runs on the developer machine only. Commands that create or change anything in a Cloudflare account are listed separately in §7 and must not be run until decision C1 (Cloudflare account access) is answered.
@@ -118,7 +118,7 @@ gio-kerala/                      repo root (this folder, ideally moved out of On
 
 Run in PowerShell. Steps 1-2 are one-off decisions; nothing below contacts a Cloudflare account.
 
-> **Done on 28 Oct 2026.** Steps 1-8 were carried out, with these deviations: the project was **copied** (the OneDrive folder was left untouched; all 254 files were verified by SHA-256); OpenNext was configured by hand instead of with `opennextjs-cloudflare migrate`; `pnpm-workspace.yaml` sets `nodeLinker: hoisted`, because on Windows without Developer Mode the OpenNext build fails with `EPERM ... symlink`; spike code is enabled with `ENABLE_SPIKES=1` in `apps/web/.dev.vars`. On a fresh clone, run `corepack enable pnpm`, `pnpm install`, copy `apps/web/.dev.vars.example` to `apps/web/.dev.vars` and fill it in, then run `pnpm db:migrate:local`.
+> **Done on 28 Oct 2026.** Steps 1-8 were carried out, with these deviations: the project was **copied** (the OneDrive folder was left untouched; all 254 files were verified by SHA-256); OpenNext was configured by hand instead of with `opennextjs-cloudflare migrate`; `pnpm-workspace.yaml` sets `nodeLinker: hoisted`, because on Windows without Developer Mode the OpenNext build fails with `EPERM ... symlink`. The phase-1 spike code and its `ENABLE_SPIKES` flag were removed in phase 2 (the code is still in commit `3250241`). On a fresh clone, run `corepack enable pnpm`, `pnpm install`, copy `apps/web/.dev.vars.example` to `apps/web/.dev.vars` and fill it in, then run `pnpm db:migrate:local`.
 
 **1. Move the project out of OneDrive (recommended before any `pnpm install`).** `node_modules`, `.next` and `.wrangler` inside a synced folder cause slow installs and file-lock errors. Copy, verify, then remove the OneDrive copy only after checking:
 
@@ -213,9 +213,24 @@ Paste the generated secret into `BETTER_AUTH_SECRET` in `apps/web/.dev.vars` and
 
 Always pass `--local` to `wrangler d1` commands until a staging database exists.
 
-Root shortcuts (from the repo root): `pnpm dev`, `pnpm build`, `pnpm build:cf` (OpenNext build only), `pnpm preview`, `pnpm lint`, `pnpm typecheck`, `pnpm db:generate`, `pnpm db:migrate:local`, `pnpm spikes http://localhost:8787` (spike checks against a running server).
+Root shortcuts (from the repo root): `pnpm dev`, `pnpm build`, `pnpm build:cf` (OpenNext build only), `pnpm preview`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm db:generate`, `pnpm db:migrate:local`.
 
-**Dev mode vs Cloudflare preview mode.** `pnpm dev` runs Next's own Node.js dev server with hot reload, and bindings are emulated through `getCloudflareContext()`. `pnpm preview` builds the real Worker bundle and runs it in `workerd` (the Workers runtime), which is closer to production. The two differ in ways that matter: `.dev.vars` values reach `process.env` only in preview, and OpenNext's router does not apply the trailing-slash redirect to `/api/*` while `next dev` does. Use dev for UI work; run preview, and the spike or test suite, before merging anything that touches routing, bindings or auth. Details: `docs/architecture/PHASE_1_SPIKE_RESULTS.md` §4.1.
+**Legacy URL and media layer** (`apps/web/worker.ts`, `apps/web/src/legacy/`; design in `docs/architecture/LEGACY_URL_AND_MEDIA_LAYER.md`):
+
+| Purpose | Command |
+|---|---|
+| Unit and audit tests (Node's built-in test runner; no extra dependency) | `pnpm test` |
+| Regenerate the redirect and media data from the audit CSVs and the local snapshot | `pnpm generate:legacy` |
+| Fail if the generated data is out of date | `pnpm check:legacy` |
+| End-to-end check against a running `pnpm preview` | `pnpm check:legacy-preview` (default `http://localhost:8787`) |
+
+**Dev mode vs Cloudflare preview mode.** `pnpm dev` runs Next's own Node.js dev server with hot reload, and bindings are emulated through `getCloudflareContext()`. `pnpm preview` builds the real Worker bundle and runs it in `workerd` (the Workers runtime), which is closer to production. The two differ in ways that matter:
+
+- **The custom Worker entry runs only in preview and production.** Under `pnpm dev` there are no legacy redirects, no 410s and no `/wp-content/uploads/*` handling.
+- `.dev.vars` values reach `process.env` only in preview.
+- OpenNext's router does not apply the trailing-slash redirect to `/api/*`, while `next dev` does.
+
+Use dev for UI work. Run `pnpm test`, then `pnpm preview` with `pnpm check:legacy-preview`, before merging anything that touches routing, legacy URLs, media, bindings or auth. Details: `docs/architecture/PHASE_1_SPIKE_RESULTS.md` §4.1.
 
 On Windows, stopping `pnpm dev` or `pnpm preview` from a tool may leave `workerd.exe` running and holding port 8787. Stop the whole process tree (`taskkill /PID <pid> /T /F`).
 

@@ -16,8 +16,6 @@ const eslintConfig = defineConfig([
     ".open-next/**",
     ".wrangler/**",
     "cloudflare-env.d.ts",
-    // Phase-1 spike scripts (plain Node scripts and a wrangler-bundled entry)
-    "spikes/**",
   ]),
 ]);
 
