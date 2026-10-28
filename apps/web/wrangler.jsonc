@@ -5,7 +5,9 @@
 // are answered; staging/production environments will be added then.
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"main": ".open-next/worker.js",
+	// Custom entry: legacy WordPress URLs and /wp-content/uploads first, then OpenNext.
+	// See docs/architecture/LEGACY_URL_AND_MEDIA_LAYER.md
+	"main": "worker.ts",
 	"name": "gio-kerala-web",
 	"compatibility_date": "2026-10-01",
 	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],

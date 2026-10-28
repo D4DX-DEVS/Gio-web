@@ -16,6 +16,9 @@
     "typecheck": "pnpm -r typecheck",
     "db:generate": "pnpm --filter @gio/db generate",
     "db:migrate:local": "pnpm --filter web exec wrangler d1 migrations apply DB --local",
-    "spikes": "node apps/web/spikes/run-spikes.mjs"
+    "test": "pnpm --filter web test",
+    "generate:legacy": "pnpm --filter web generate:legacy",
+    "check:legacy": "pnpm --filter web check:legacy",
+    "check:legacy-preview": "node apps/web/scripts/check-legacy-preview.mjs"
   }
 }

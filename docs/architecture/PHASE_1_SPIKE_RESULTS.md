@@ -3,6 +3,7 @@
 - **Date:** 28 October 2026
 - **Branch:** `phase-1/foundation-spikes` (baseline commit `60c9d6c` on `main`)
 - **Scope:** local only. No Cloudflare account was used, no remote resource was created, nothing was deployed, and the live site was not contacted.
+- **Update 28 Oct 2026:** the spike A recommendation was adopted. The legacy URL and media layer now runs in a custom Worker entry, and the spike code (including `proxy.ts` and `ENABLE_SPIKES`) was removed. See `docs/architecture/LEGACY_URL_AND_MEDIA_LAYER.md`. Commands below that refer to spike files apply to commit `3250241`.
 - **Read with:** `docs/audit/04-STATUS-AND-DECISIONS.md` (decisions), `docs/audit/05-MIGRATION-DESIGN.md` (architecture), `docs/SETUP.md` (commands).
 
 Status labels used below:
