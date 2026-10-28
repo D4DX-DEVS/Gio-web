@@ -2,9 +2,7 @@
 // (workerd, local bindings). Expectations are derived from the audit CSVs.
 // Usage (from apps/web): node scripts/check-legacy-preview.mjs [http://localhost:8787]
 //
-// Local R2 holds no client media in this worktree, so real legacy keys are expected
-// to answer 404 (nothing is assumed to exist). Direct serving is exercised with the
-// synthetic phase-1 objects under wp-content/uploads/2099/01/, if present.
+// Assumes the importer has loaded the media into local R2 (tools/migrate "load").
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -72,19 +70,23 @@ const post = await req("/wp-login.php", { method: "POST", body: "log=x" });
 check("patterns", "POST /wp-login.php → 410", post.status === 410, String(post.status));
 
 // 4. Media
+const IMMUTABLE = "public, max-age=31536000, immutable";
+const SHORT = "public, max-age=300";
 const media = [
-  ["synthetic object served directly", "/wp-content/uploads/2099/01/spike-test.png", 200, "public, max-age=31536000, immutable"],
-  ["size not allow-listed → 404", "/wp-content/uploads/2099/01/spike-test-300x200.png", 404, "public, max-age=300"],
-  ["real allow-listed size, original absent from local R2 → 404", "/wp-content/uploads/2024/07/IMG_1977-150x150.jpg", 404, "public, max-age=300"],
-  ["real original absent from local R2 → 404", "/wp-content/uploads/2025/08/bnr1.jpg", 404, "public, max-age=300"],
-  ["malformed path → 404", "/wp-content/uploads/a%2Fb.jpg", 404, "public, max-age=300"],
+  ["original served directly from R2", "/wp-content/uploads/2025/08/bnr1.jpg", 200, IMMUTABLE, "direct"],
+  ["allow-listed WordPress size resized via the Images binding", "/wp-content/uploads/2024/07/IMG_1977-150x150.jpg", 200, IMMUTABLE, "resized"],
+  ["size not allow-listed → 404", "/wp-content/uploads/2024/07/IMG_1977-123x456.jpg", 404, SHORT, null],
+  ["referenced file whose original is unknown → 404", "/wp-content/uploads/2020/10/event-14-370x270.jpg", 404, SHORT, null],
+  ["malformed path → 404", "/wp-content/uploads/a%2Fb.jpg", 404, SHORT, null],
 ];
-for (const [name, p, status, cache] of media) {
+for (const [name, p, status, cache, how] of media) {
   const res = await req(p);
   const body = await res.text();
-  check("media", name, res.status === status && res.headers.get("cache-control") === cache && res.headers.get("x-content-type-options") === "nosniff" && !/[A-Z]:\\|snapshot/.test(body), `${res.status} ${res.headers.get("cache-control")} ${res.headers.get("content-type")}`);
+  const ok = res.status === status && res.headers.get("cache-control") === cache && res.headers.get("x-content-type-options") === "nosniff" &&
+    (how === null || res.headers.get("x-legacy-media") === how) && !/[A-Z]:\|snapshot/.test(body);
+  check("media", name, ok, `${res.status} ${res.headers.get("cache-control")} ${res.headers.get("x-legacy-media") ?? ""}`);
 }
-const mpost = await req("/wp-content/uploads/2099/01/spike-test.png", { method: "POST" });
+const mpost = await req("/wp-content/uploads/2025/08/bnr1.jpg", { method: "POST" });
 check("media", "POST → 405", mpost.status === 405, String(mpost.status));
 
 // 5. Ordinary routes still reach OpenNext; spike routes are gone

@@ -34,3 +34,9 @@ ignoredBuiltDependencies:
 # copies Next's standalone output and fails with EPERM on symlink() unless
 # Developer Mode is on (see PHASE_1_SPIKE_RESULTS.md, "Windows").
 nodeLinker: hoisted
+
+# One postcss copy. next pins 8.5.23 and sanitize-html needs ^8.5.27; two copies make
+# Turbopack emit a symlinked alias (.next/node_modules/postcss-<hash>) for this
+# server-external package, which the OpenNext build cannot copy on Windows (EPERM).
+overrides:
+  postcss: 8.5.30
