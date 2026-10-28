@@ -74,7 +74,7 @@ function ImageWithText({ image, text }: { image: LayoutSection; text: LayoutSect
   const item = image.items[0];
   return (
     <section className="py-14 sm:py-20">
-      <Container className="grid items-start gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+      <Container className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
         <Linked item={item} className="block overflow-hidden rounded-3xl shadow-xl shadow-brand-900/10 ring-1 ring-line lg:sticky lg:top-28">
           <Img media={layoutMedia(item.media, item.altText)} className="h-auto w-full" />
         </Linked>
@@ -111,7 +111,7 @@ function Section({ section: s, pageTitle }: { section: LayoutSection; pageTitle?
         <section className="py-10">
           <Container className="flex justify-center">
             {s.items.map((i) => (
-              <Linked key={i.id} item={i} className="block max-w-3xl overflow-hidden rounded-2xl shadow-lg shadow-brand-900/10 ring-1 ring-line">
+              <Linked key={i.id} item={i} className="block max-w-xl overflow-hidden rounded-2xl shadow-lg shadow-brand-900/10 ring-1 ring-line">
                 <Img media={layoutMedia(i.media, i.altText)} className="h-auto w-full" />
               </Linked>
             ))}

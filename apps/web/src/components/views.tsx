@@ -81,7 +81,7 @@ function LeaderGrid({ leaders, compact = false, featuredFirst = false }: { leade
   return (
     <>
       {featured.length > 0 && (
-        <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:mx-auto lg:max-w-3xl">
+        <div className="mb-8 grid grid-cols-2 gap-4 sm:gap-6 lg:mx-auto lg:max-w-3xl">
           {featured.map((l) => (
             <LeaderCard key={l.id} l={l} large />
           ))}
