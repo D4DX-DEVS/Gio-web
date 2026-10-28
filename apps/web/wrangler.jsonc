@@ -1,0 +1,55 @@
+// Local development configuration only.
+// No remote resources exist yet: the D1 database_id is a placeholder and the
+// R2 buckets are emulated by Miniflare in .wrangler/state/. Do not deploy from
+// this file until decisions C1/D1/D2 in docs/audit/04-STATUS-AND-DECISIONS.md
+// are answered; staging/production environments will be added then.
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"main": ".open-next/worker.js",
+	"name": "gio-kerala-web",
+	"compatibility_date": "2026-10-01",
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"services": [
+		{
+			// Self-reference service binding; the service name must match the worker name.
+			// See https://opennext.js.org/cloudflare/caching
+			"binding": "WORKER_SELF_REFERENCE",
+			"service": "gio-kerala-web"
+		}
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "gio-local",
+			// Placeholder. Local D1 lives in .wrangler/state/; no remote database exists.
+			"database_id": "00000000-0000-0000-0000-000000000000",
+			"migrations_dir": "../../packages/db/migrations"
+		}
+	],
+	"r2_buckets": [
+		{
+			// OpenNext incremental cache (ISR / "use cache" data)
+			"binding": "NEXT_INC_CACHE_R2_BUCKET",
+			"bucket_name": "gio-kerala-opennext-cache-local"
+		},
+		{
+			// Public media (legacy wp-content/uploads keys and new uploads), see 05-MIGRATION-DESIGN.md §5.1
+			"binding": "MEDIA",
+			"bucket_name": "gio-media-local"
+		},
+		{
+			// Private bucket (snapshots, reports, backups); never served publicly
+			"binding": "PRIVATE",
+			"bucket_name": "gio-private-local"
+		}
+	],
+	"images": {
+		// Cloudflare Images binding: used by OpenNext for /_next/image and by the
+		// legacy resized-image route (phase-1 spike C)
+		"binding": "IMAGES"
+	}
+}

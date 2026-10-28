@@ -1,7 +1,7 @@
 # GIO Kerala rebuild: local setup
 
-- **Date:** 27 October 2026
-- **Status:** preparation only. No application code, no Cloudflare resources, nothing deployed.
+- **Date:** 27 October 2026 (updated 28 October 2026)
+- **Status:** the local workspace exists at `C:\dev\gio-kerala` (branch `phase-1/foundation-spikes`); still no Cloudflare resources and nothing deployed. Installed versions, test results and deviations from the steps below are in `docs/architecture/PHASE_1_SPIKE_RESULTS.md`.
 - **Read first:** `docs/audit/04-STATUS-AND-DECISIONS.md` (blocking decisions), `docs/audit/05-MIGRATION-DESIGN.md` (architecture), `docs/audit/d1-schema-proposal.sql`.
 
 Everything in this file runs on the developer machine only. Commands that create or change anything in a Cloudflare account are listed separately in §7 and must not be run until decision C1 (Cloudflare account access) is answered.
@@ -37,7 +37,7 @@ The repository must stay **private**. `docs/audit/inventory/leaders.csv` contain
 |---|---|---|---|
 | Node.js | 22 LTS (Wrangler 4 needs ≥ 22; Next.js 16 needs ≥ 20.9) | 22.23.2 via nvm-windows | OK |
 | npm | bundled | 10.9.8 | OK |
-| pnpm | 10.16+ (for `minimumReleaseAge`) | **not installed** | install through Corepack (below) |
+| pnpm | **10.34.7** (≥ 10.34.5: earlier releases have high-severity advisories) | 10.34.7 via Corepack since 28 Oct | pinned in the root `package.json` `packageManager` field |
 | Corepack | bundled with Node 22 | 0.34.6 | OK |
 | Git | any recent | 2.55.0 | OK; `user.name`/`user.email` set |
 | Wrangler | 4.x, installed **per project** as a dev dependency | not installed globally | do not install globally; use `pnpm exec wrangler` |
@@ -71,7 +71,9 @@ Versions as on the npm registry on 27 Oct 2026. Pin exact versions in the lockfi
 | `typescript` | **5.9.3** (not 7.x) | TypeScript 7 is the new native compiler; keep 5.9 until Next.js, drizzle-kit and ESLint tooling confirm 7.x support |
 | `tailwindcss` | 4.x | per `02-ARCHITECTURE-PLAN.md` |
 
-To verify in the phase 1 spike, before building on them:
+Exact pinned versions (and why some differ from this table, e.g. wrangler 4.150.0, better-auth 1.7.7, react 19.3.1, @opennextjs/cloudflare 1.20.13) are in `docs/architecture/PHASE_1_SPIKE_RESULTS.md` §2.
+
+To verify in the phase 1 spike, before building on them (results: `docs/architecture/PHASE_1_SPIKE_RESULTS.md`):
 
 1. Next.js 16 renamed `middleware.ts` to `proxy.ts` (Node.js runtime by default). Confirm what OpenNext 1.20 supports; the legacy-URL redirect layer (`05` §6.1 step 7) depends on it.
 2. FTS5 `trigram` tokenizer on D1 (`05` §4).
@@ -115,6 +117,8 @@ gio-kerala/                      repo root (this folder, ideally moved out of On
 ## 5. Initialise the project (local only)
 
 Run in PowerShell. Steps 1-2 are one-off decisions; nothing below contacts a Cloudflare account.
+
+> **Done on 28 Oct 2026.** Steps 1-8 were carried out, with these deviations: the project was **copied** (the OneDrive folder was left untouched; all 254 files were verified by SHA-256); OpenNext was configured by hand instead of with `opennextjs-cloudflare migrate`; `pnpm-workspace.yaml` sets `nodeLinker: hoisted`, because on Windows without Developer Mode the OpenNext build fails with `EPERM ... symlink`; spike code is enabled with `ENABLE_SPIKES=1` in `apps/web/.dev.vars`. On a fresh clone, run `corepack enable pnpm`, `pnpm install`, copy `apps/web/.dev.vars.example` to `apps/web/.dev.vars` and fill it in, then run `pnpm db:migrate:local`.
 
 **1. Move the project out of OneDrive (recommended before any `pnpm install`).** `node_modules`, `.next` and `.wrangler` inside a synced folder cause slow installs and file-lock errors. Copy, verify, then remove the OneDrive copy only after checking:
 
@@ -208,6 +212,12 @@ Paste the generated secret into `BETTER_AUTH_SECRET` in `apps/web/.dev.vars` and
 | Lint | `pnpm --filter web lint` | |
 
 Always pass `--local` to `wrangler d1` commands until a staging database exists.
+
+Root shortcuts (from the repo root): `pnpm dev`, `pnpm build`, `pnpm build:cf` (OpenNext build only), `pnpm preview`, `pnpm lint`, `pnpm typecheck`, `pnpm db:generate`, `pnpm db:migrate:local`, `pnpm spikes http://localhost:8787` (spike checks against a running server).
+
+**Dev mode vs Cloudflare preview mode.** `pnpm dev` runs Next's own Node.js dev server with hot reload, and bindings are emulated through `getCloudflareContext()`. `pnpm preview` builds the real Worker bundle and runs it in `workerd` (the Workers runtime), which is closer to production. The two differ in ways that matter: `.dev.vars` values reach `process.env` only in preview, and OpenNext's router does not apply the trailing-slash redirect to `/api/*` while `next dev` does. Use dev for UI work; run preview, and the spike or test suite, before merging anything that touches routing, bindings or auth. Details: `docs/architecture/PHASE_1_SPIKE_RESULTS.md` §4.1.
+
+On Windows, stopping `pnpm dev` or `pnpm preview` from a tool may leave `workerd.exe` running and holding port 8787. Stop the whole process tree (`taskkill /PID <pid> /T /F`).
 
 ---
 

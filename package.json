@@ -1,0 +1,21 @@
+{
+  "name": "gio-kerala",
+  "version": "0.0.0",
+  "private": true,
+  "description": "GIO Kerala website rebuild (giokerala.org): pnpm workspace",
+  "packageManager": "pnpm@10.34.7",
+  "engines": {
+    "node": ">=22.12 <23"
+  },
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter web build",
+    "build:cf": "pnpm --filter web build:cf",
+    "preview": "pnpm --filter web preview",
+    "lint": "pnpm --filter web lint",
+    "typecheck": "pnpm -r typecheck",
+    "db:generate": "pnpm --filter @gio/db generate",
+    "db:migrate:local": "pnpm --filter web exec wrangler d1 migrations apply DB --local",
+    "spikes": "node apps/web/spikes/run-spikes.mjs"
+  }
+}

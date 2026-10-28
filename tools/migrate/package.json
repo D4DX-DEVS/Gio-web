@@ -1,0 +1,21 @@
+{
+  "name": "@gio/migrate",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "gio-migrate": "./src/cli.ts"
+  },
+  "scripts": {
+    "start": "tsx src/cli.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@gio/db": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  }
+}
