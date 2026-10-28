@@ -1,0 +1,20 @@
+// Local-only bindings for the importer (getPlatformProxy). Same database_id and bucket names as
+// apps/web/wrangler.jsonc, so with --persist pointing at apps/web/.wrangler/state the web app sees
+// exactly what the importer loaded. No remote resources: the database_id is a placeholder.
+{
+	"$schema": "../../node_modules/wrangler/config-schema.json",
+	"name": "gio-kerala-migrate-local",
+	"compatibility_date": "2026-10-01",
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "gio-local",
+			"database_id": "00000000-0000-0000-0000-000000000000",
+			"migrations_dir": "../../packages/db/migrations"
+		}
+	],
+	"r2_buckets": [
+		{ "binding": "MEDIA", "bucket_name": "gio-media-local" },
+		{ "binding": "PRIVATE", "bucket_name": "gio-private-local" }
+	]
+}
