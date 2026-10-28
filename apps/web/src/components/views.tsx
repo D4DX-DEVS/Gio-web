@@ -1,7 +1,7 @@
 // Page-level views shared by several routes.
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getLeaderGroups, getCategory, getMedia, getPageLayout, getPublishedPost, listPosts, pageConfig, relatedPosts, type PageRow } from "@/lib/content";
+import { getLeaderGroups, getCategory, getMedia, getPageLayout, isKeptLegacyPath, getPublishedPost, listPosts, pageConfig, relatedPosts, type PageRow } from "@/lib/content";
 import { sanitize } from "@/lib/sanitize";
 import { formatDate, langOf, stripHtml } from "@/lib/text";
 import { SocialIcon } from "./Icons";
@@ -132,7 +132,9 @@ export async function ListingPage({ page, pageNo }: { page: PageRow; pageNo: num
   const perPage = Number(cfg.perPage) || 9;
   const category = typeof cfg.category === "string" ? cfg.category : undefined;
   const [{ items, pages }, header] = await Promise.all([listPosts({ category }, pageNo, perPage), getMedia(typeof cfg.headerImageMediaId === "number" ? cfg.headerImageMediaId : null)]);
-  if (pageNo > 1 && pageNo > pages) notFound();
+  // The old site used different page sizes, so some of its archive pages (e.g. /gio-news/page/3/)
+  // are past the end here. Those verified legacy URLs keep answering with an empty page, not a 404.
+  if (pageNo > 1 && pageNo > pages && !(await isKeptLegacyPath(`/${page.slug}/page/${pageNo}/`))) notFound();
   return (
     <PostGrid
       title={page.title}
@@ -194,9 +196,15 @@ export function PostGrid({
             ))}
           </div>
         ) : (
-          <EmptyState title="Nothing published here yet." />
+          <EmptyState title={page > pages && pages > 0 ? "There are no more posts on this page." : "Nothing published here yet."}>
+            {page > pages && pages > 0 && (
+              <Link href={base} className="font-semibold text-brand-600 underline">
+                Go to the first page
+              </Link>
+            )}
+          </EmptyState>
         )}
-        <Pagination page={page} pages={pages} base={base} />
+        <Pagination page={Math.min(page, pages)} pages={pages} base={base} />
       </Container>
     </>
   );

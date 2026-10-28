@@ -431,6 +431,16 @@ export async function galleryCollections() {
   return collections.sort((a, b) => (b.date?.getTime() ?? 0) - (a.date?.getTime() ?? 0));
 }
 
+/** True when the old site served this exact path and url_map.csv keeps it (verified same_path). */
+export async function isKeptLegacyPath(decodedPath: string) {
+  const [row] = await getDb()
+    .select({ id: schema.legacyUrls.id })
+    .from(schema.legacyUrls)
+    .where(and(eq(schema.legacyUrls.oldPathDecoded, decodedPath), eq(schema.legacyUrls.action, "same_path"), eq(schema.legacyUrls.decisionStatus, "verified")))
+    .limit(1);
+  return Boolean(row);
+}
+
 export async function sitemapEntries() {
   const db = getDb();
   const [p, ps, ev] = await Promise.all([
