@@ -1,0 +1,140 @@
+﻿old_url,old_path,type,live_status,in_sitemap,new_path,action,recommended_target,decision_status,note
+https://www.giokerala.org/news-events/,/news-events/,archive,200,post-sitemap.xml,/news-events/,same_path,,verified,
+https://www.giokerala.org/author/gioadmin/,/author/gioadmin/,author-archive,200,author-sitemap.xml,,pending_decision,/news-events/,needs_client_approval,
+https://www.giokerala.org/author/gioeditor/,/author/gioeditor/,author-archive,200,author-sitemap.xml,,pending_decision,/news-events/,needs_client_approval,
+https://www.giokerala.org/author/gioeditor/page/2/,/author/gioeditor/page/2/,author-archive,200,NO,,pending_decision,/news-events/,needs_client_approval,
+https://www.giokerala.org/author/gioeditor/page/3/,/author/gioeditor/page/3/,author-archive,200,NO,,pending_decision,/news-events/,needs_client_approval,
+https://www.giokerala.org/elementor-hf/2102/,/elementor-hf/2102/,builder-template,200,elementor-hf-sitemap.xml,,pending_decision,/,needs_client_approval,
+https://www.giokerala.org/nekit-mm-cpt/single-page/,/nekit-mm-cpt/single-page/,builder-template,200,nekit-mm-cpt-sitemap.xml,,pending_decision,/,needs_client_approval,
+https://www.giokerala.org/causes/,/causes/,error,500,page-sitemap.xml,,pending_decision,/,needs_client_approval,HTTP 500 on live site
+https://www.giokerala.org/event/lets-run-for-the-poor-children-education-3/,/event/lets-run-for-the-poor-children-education-3/,event,200,tribe_events-sitemap.xml,,pending_decision,/events/,needs_client_approval,theme demo event (venue New York)
+https://www.giokerala.org/event/naqaba-camp-for-selected-hss-students/,/event/naqaba-camp-for-selected-hss-students/,event,200,tribe_events-sitemap.xml,/event/naqaba-camp-for-selected-hss-students/,same_path,,verified,
+https://www.giokerala.org/event/thibyan25/,/event/thibyan25/,event,200,tribe_events-sitemap.xml,/event/thibyan25/,same_path,,verified,
+https://www.giokerala.org/events/,/events/,event-archive,200,tribe_events-sitemap.xml,/events/,same_path,,verified,
+https://www.giokerala.org/events/category/events/,/events/category/events/,event-archive,200,tribe_events_cat-sitemap.xml,/events/category/events/,same_path,,verified,
+https://www.giokerala.org/events/category/events/list/,/events/category/events/list/,event-archive,200,NO,/events/category/events/list/,same_path,,verified,
+https://www.giokerala.org/events/category/events/month/,/events/category/events/month/,event-archive,200,NO,/events/category/events/month/,same_path,,verified,
+https://www.giokerala.org/events/category/events/today/,/events/category/events/today/,event-archive,200,NO,/events/category/events/today/,same_path,,verified,
+https://www.giokerala.org/events/list/,/events/list/,event-archive,200,NO,/events/list/,same_path,,verified,
+https://www.giokerala.org/events/month/,/events/month/,event-archive,200,NO,/events/month/,same_path,,verified,
+https://www.giokerala.org/events/today/,/events/today/,event-archive,200,NO,/events/today/,same_path,,verified,
+https://www.giokerala.org/,/,page,200,page-sitemap.xml,/,same_path,,verified,
+https://www.giokerala.org/about-us/,/about-us/,page,200,page-sitemap.xml,/about-us/,same_path,,verified,
+https://www.giokerala.org/call-for-papers/,/call-for-papers/,page,200,page-sitemap.xml,/call-for-papers/,same_path,,verified,
+https://www.giokerala.org/coming-soon/,/coming-soon/,page,200,page-sitemap.xml,,pending_decision,/,needs_client_approval,theme placeholder page
+https://www.giokerala.org/contact-us/,/contact-us/,page,200,page-sitemap.xml,/contact-us/,same_path,,verified,
+https://www.giokerala.org/district-leaders/,/district-leaders/,page,200,page-sitemap.xml,/district-leaders/,same_path,,verified,
+https://www.giokerala.org/former-leaders/,/former-leaders/,page,200,page-sitemap.xml,/former-leaders/,same_path,,verified,
+https://www.giokerala.org/gio-events/,/gio-events/,page,200,page-sitemap.xml,/gio-events/,same_path,,verified,
+https://www.giokerala.org/gio-news/,/gio-news/,page,200,page-sitemap.xml,/gio-news/,same_path,,verified,
+https://www.giokerala.org/tamkeen/,/tamkeen/,page,200,page-sitemap.xml,/tamkeen/,same_path,,verified,
+https://www.giokerala.org/team/,/team/,page,200,page-sitemap.xml,/team/,same_path,,verified,
+https://www.giokerala.org/gio-events/page/2/,/gio-events/page/2/,pagination,200,NO,/gio-events/page/2/,same_path,,verified,
+https://www.giokerala.org/gio-events/page/3/,/gio-events/page/3/,pagination,200,NO,/gio-events/page/3/,same_path,,verified,
+https://www.giokerala.org/gio-events/page/4/,/gio-events/page/4/,pagination,200,NO,/gio-events/page/4/,same_path,,verified,
+https://www.giokerala.org/gio-events/page/5/,/gio-events/page/5/,pagination,200,NO,/gio-events/page/5/,same_path,,verified,
+https://www.giokerala.org/gio-news/page/2/,/gio-news/page/2/,pagination,200,NO,/gio-news/page/2/,same_path,,verified,
+https://www.giokerala.org/gio-news/page/3/,/gio-news/page/3/,pagination,200,NO,/gio-news/page/3/,same_path,,verified,
+https://www.giokerala.org/news-events/page/2/,/news-events/page/2/,pagination,200,NO,/news-events/page/2/,same_path,,verified,
+https://www.giokerala.org/news-events/page/3/,/news-events/page/3/,pagination,200,NO,/news-events/page/3/,same_path,,verified,
+https://www.giokerala.org/news-events/page/4/,/news-events/page/4/,pagination,200,NO,/news-events/page/4/,same_path,,verified,
+https://www.giokerala.org/1921-rejuvenate-memories-enligh-generations/,/1921-rejuvenate-memories-enligh-generations/,post,200,post-sitemap.xml,/1921-rejuvenate-memories-enligh-generations/,same_path,,verified,
+https://www.giokerala.org/2577-2/,/2577-2/,post,200,post-sitemap.xml,/2577-2/,same_path,,verified,
+https://www.giokerala.org/celebrating-hijab-rally-against-hate/,/celebrating-hijab-rally-against-hate/,post,200,post-sitemap.xml,/celebrating-hijab-rally-against-hate/,same_path,,verified,
+https://www.giokerala.org/discurso-muslimah-2/,/discurso-muslimah-2/,post,200,post-sitemap.xml,/discurso-muslimah-2/,same_path,,verified,
+https://www.giokerala.org/genocides-never-again/,/genocides-never-again/,post,200,post-sitemap.xml,/genocides-never-again/,same_path,,verified,
+https://www.giokerala.org/iftarmeet-giokerala/,/iftarmeet-giokerala/,post,200,post-sitemap.xml,/iftarmeet-giokerala/,same_path,,verified,
+https://www.giokerala.org/islamophobia-against-muslim-women/,/islamophobia-against-muslim-women/,post,200,post-sitemap.xml,/islamophobia-against-muslim-women/,same_path,,verified,
+https://www.giokerala.org/muslim-women-and-the-world-beaneath-academic-summit/,/muslim-women-and-the-world-beaneath-academic-summit/,post,200,post-sitemap.xml,/muslim-women-and-the-world-beaneath-academic-summit/,same_path,,verified,
+https://www.giokerala.org/muslim-womens-colloquium/,/muslim-womens-colloquium/,post,200,post-sitemap.xml,/muslim-womens-colloquium/,same_path,,verified,
+https://www.giokerala.org/niqash-academic-summit-on-islam-and-moral-narratives/,/niqash-academic-summit-on-islam-and-moral-narratives/,post,200,post-sitemap.xml,/niqash-academic-summit-on-islam-and-moral-narratives/,same_path,,verified,
+https://www.giokerala.org/nuqbah25/,/nuqbah25/,post,200,post-sitemap.xml,/nuqbah25/,same_path,,verified,
+https://www.giokerala.org/parvaz-2017/,/parvaz-2017/,post,200,post-sitemap.xml,/parvaz-2017/,same_path,,verified,
+https://www.giokerala.org/protest-rally-against-waqf-act-2025/,/protest-rally-against-waqf-act-2025/,post,200,post-sitemap.xml,/protest-rally-against-waqf-act-2025/,same_path,,verified,
+https://www.giokerala.org/scholarship-കരുതലിന്റെ-തണലിൽ/,/scholarship-കരുതലിന്റെ-തണലിൽ/,post,200,post-sitemap.xml,/scholarship-കരുതലിന്റെ-തണലിൽ/,same_path,,verified,
+https://www.giokerala.org/shifana-binth-zubairs-post/,/shifana-binth-zubairs-post/,post,200,post-sitemap.xml,/shifana-binth-zubairs-post/,same_path,,verified,
+https://www.giokerala.org/state-leaders-meet-2025/,/state-leaders-meet-2025/,post,200,post-sitemap.xml,/state-leaders-meet-2025/,same_path,,verified,
+https://www.giokerala.org/targeting-community-victimising-women-resist-means-of-racial-annihilation-കാമ്പയിൻ/,/targeting-community-victimising-women-resist-means-of-racial-annihilation-കാമ്പയിൻ/,post,200,post-sitemap.xml,/targeting-community-victimising-women-resist-means-of-racial-annihilation-കാമ്പയിൻ/,same_path,,verified,
+https://www.giokerala.org/the-muslimah-resistance/,/the-muslimah-resistance/,post,200,post-sitemap.xml,/the-muslimah-resistance/,same_path,,verified,
+https://www.giokerala.org/thibyan25/,/thibyan25/,post,200,post-sitemap.xml,/thibyan25/,same_path,,verified,
+https://www.giokerala.org/കലിമ-literary-contests-for-islamic-campus-students/,/കലിമ-literary-contests-for-islamic-campus-students/,post,200,post-sitemap.xml,/കലിമ-literary-contests-for-islamic-campus-students/,same_path,,verified,
+https://www.giokerala.org/കാൻവാസ്കാർഫ്/,/കാൻവാസ്കാർഫ്/,post,200,post-sitemap.xml,/കാൻവാസ്കാർഫ്/,same_path,,verified,
+https://www.giokerala.org/ജി-ഐ-ഒ-സ്ഥാപക-ദിനത്തോടനുബ/,/ജി-ഐ-ഒ-സ്ഥാപക-ദിനത്തോടനുബ/,post,200,post-sitemap.xml,/ജി-ഐ-ഒ-സ്ഥാപക-ദിനത്തോടനുബ/,same_path,,verified,
+https://www.giokerala.org/ജി-സി-സി-യിലെ-വിദ്യാർത്ഥി/,/ജി-സി-സി-യിലെ-വിദ്യാർത്ഥി/,post,200,post-sitemap.xml,/ജി-സി-സി-യിലെ-വിദ്യാർത്ഥി/,same_path,,verified,
+https://www.giokerala.org/ജില്ലാ-സമ്മേളനങ്ങൾ/,/ജില്ലാ-സമ്മേളനങ്ങൾ/,post,200,post-sitemap.xml,/ജില്ലാ-സമ്മേളനങ്ങൾ/,same_path,,verified,
+https://www.giokerala.org/താത്തക്കുട്ടികളുടെ-പാട്/,/താത്തക്കുട്ടികളുടെ-പാട്/,post,200,post-sitemap.xml,/താത്തക്കുട്ടികളുടെ-പാട്/,same_path,,verified,
+https://www.giokerala.org/തിബ്യാൻ-25/,/തിബ്യാൻ-25/,post,200,post-sitemap.xml,/തിബ്യാൻ-25/,same_path,,verified,
+https://www.giokerala.org/തർത്തീൽ-20122014/,/തർത്തീൽ-20122014/,post,200,post-sitemap.xml,/തർത്തീൽ-20122014/,same_path,,verified,
+https://www.giokerala.org/ദക്ഷിണ-കേരളം-സമ്മേളനം/,/ദക്ഷിണ-കേരളം-സമ്മേളനം/,post,200,post-sitemap.xml,/ദക്ഷിണ-കേരളം-സമ്മേളനം/,same_path,,verified,
+https://www.giokerala.org/നിയമ-വഴികളിലൂടെ/,/നിയമ-വഴികളിലൂടെ/,post,200,post-sitemap.xml,/നിയമ-വഴികളിലൂടെ/,same_path,,verified,
+https://www.giokerala.org/നേർക്കാഴ്ചകൾ-മജ്ലിസ്-ഡ്/,/നേർക്കാഴ്ചകൾ-മജ്ലിസ്-ഡ്/,post,200,post-sitemap.xml,/നേർക്കാഴ്ചകൾ-മജ്ലിസ്-ഡ്/,same_path,,verified,
+https://www.giokerala.org/പീപ്പിൾസ്-ഫൗണ്ടേഷൻ-സ്കോള/,/പീപ്പിൾസ്-ഫൗണ്ടേഷൻ-സ്കോള/,post,200,post-sitemap.xml,/പീപ്പിൾസ്-ഫൗണ്ടേഷൻ-സ്കോള/,same_path,,verified,
+https://www.giokerala.org/പൗരാവകാശ-സമരം-രാപ്പകൽ-പ്/,/പൗരാവകാശ-സമരം-രാപ്പകൽ-പ്/,post,200,post-sitemap.xml,/പൗരാവകാശ-സമരം-രാപ്പകൽ-പ്/,same_path,,verified,
+https://www.giokerala.org/ഫലസ്തീൻ-അനുകൂല-പ്രകടനം-ക/,/ഫലസ്തീൻ-അനുകൂല-പ്രകടനം-ക/,post,200,post-sitemap.xml,/ഫലസ്തീൻ-അനുകൂല-പ്രകടനം-ക/,same_path,,verified,
+https://www.giokerala.org/മാളു-ഹജ്ജുമ്മ/,/മാളു-ഹജ്ജുമ്മ/,post,200,post-sitemap.xml,/മാളു-ഹജ്ജുമ്മ/,same_path,,verified,
+https://www.giokerala.org/category/gio-events/,/category/gio-events/,taxonomy-archive,200,category-sitemap.xml,/category/gio-events/,same_path,,verified,
+https://www.giokerala.org/category/gio-events/page/2/,/category/gio-events/page/2/,taxonomy-archive,200,NO,/category/gio-events/page/2/,same_path,,verified,
+https://www.giokerala.org/category/gio-events/page/3/,/category/gio-events/page/3/,taxonomy-archive,200,NO,/category/gio-events/page/3/,same_path,,verified,
+https://www.giokerala.org/category/gio-news/,/category/gio-news/,taxonomy-archive,200,category-sitemap.xml,/category/gio-news/,same_path,,verified,
+https://www.giokerala.org/tag/waqf-act-2025/,/tag/waqf-act-2025/,taxonomy-archive,200,post_tag-sitemap.xml,/tag/waqf-act-2025/,same_path,,verified,
+https://www.giokerala.org/faqs_cat/faqs-v1/,/faqs_cat/faqs-v1/,theme-demo-cpt,200,faqs_cat-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (faqs_cat); recommended 301 to / or 410
+https://www.giokerala.org/faqs_cat/faqs-v2/,/faqs_cat/faqs-v2/,theme-demo-cpt,200,faqs_cat-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (faqs_cat); recommended 301 to / or 410
+https://www.giokerala.org/project_cat/charity/,/project_cat/charity/,theme-demo-cpt,200,project_cat-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (project_cat); recommended 301 to / or 410
+https://www.giokerala.org/project_cat/clean-water/,/project_cat/clean-water/,theme-demo-cpt,200,project_cat-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (project_cat); recommended 301 to / or 410
+https://www.giokerala.org/project_cat/food-help/,/project_cat/food-help/,theme-demo-cpt,200,project_cat-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (project_cat); recommended 301 to / or 410
+https://www.giokerala.org/project_cat/homeless/,/project_cat/homeless/,theme-demo-cpt,200,project_cat-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (project_cat); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/adam-clark-2/,/save_testimonials/adam-clark-2/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/adam-clark/,/save_testimonials/adam-clark/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/anna-mull-2/,/save_testimonials/anna-mull-2/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/anna-mull-3/,/save_testimonials/anna-mull-3/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/anna-mull-4/,/save_testimonials/anna-mull-4/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/anna-mull-5/,/save_testimonials/anna-mull-5/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/anna-mull-6/,/save_testimonials/anna-mull-6/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/anna-mull/,/save_testimonials/anna-mull/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/micheal-blackwell-2/,/save_testimonials/micheal-blackwell-2/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/micheal-blackwell/,/save_testimonials/micheal-blackwell/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/paige-turner-2-2/,/save_testimonials/paige-turner-2-2/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/paige-turner-2/,/save_testimonials/paige-turner-2/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/paige-turner-3/,/save_testimonials/paige-turner-3/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/paige-turner-4/,/save_testimonials/paige-turner-4/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/paige-turner-5/,/save_testimonials/paige-turner-5/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/save_testimonials/paige-turner/,/save_testimonials/paige-turner/,theme-demo-cpt,200,save_testimonials-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (save_testimonials); recommended 301 to / or 410
+https://www.giokerala.org/savelife_faqs/how-to-divide-a-widget-area-section-into-many-columns/,/savelife_faqs/how-to-divide-a-widget-area-section-into-many-columns/,theme-demo-cpt,200,savelife_faqs-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_faqs); recommended 301 to / or 410
+https://www.giokerala.org/savelife_faqs/how-to-reset-your-database-2/,/savelife_faqs/how-to-reset-your-database-2/,theme-demo-cpt,200,savelife_faqs-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_faqs); recommended 301 to / or 410
+https://www.giokerala.org/savelife_faqs/how-to-reset-your-database/,/savelife_faqs/how-to-reset-your-database/,theme-demo-cpt,200,savelife_faqs-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_faqs); recommended 301 to / or 410
+https://www.giokerala.org/savelife_faqs/how-to-send-sites-access-information-2/,/savelife_faqs/how-to-send-sites-access-information-2/,theme-demo-cpt,200,savelife_faqs-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_faqs); recommended 301 to / or 410
+https://www.giokerala.org/savelife_faqs/how-to-send-sites-access-information/,/savelife_faqs/how-to-send-sites-access-information/,theme-demo-cpt,200,savelife_faqs-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_faqs); recommended 301 to / or 410
+https://www.giokerala.org/savelife_faqs/most-trusted-project-for-organisation/,/savelife_faqs/most-trusted-project-for-organisation/,theme-demo-cpt,200,savelife_faqs-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_faqs); recommended 301 to / or 410
+https://www.giokerala.org/savelife_faqs/the-goal-of-the-organization/,/savelife_faqs/the-goal-of-the-organization/,theme-demo-cpt,200,savelife_faqs-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_faqs); recommended 301 to / or 410
+https://www.giokerala.org/savelife_faqs/what-payment-methods-are-supported-2/,/savelife_faqs/what-payment-methods-are-supported-2/,theme-demo-cpt,200,savelife_faqs-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_faqs); recommended 301 to / or 410
+https://www.giokerala.org/savelife_faqs/what-payment-methods-are-supported/,/savelife_faqs/what-payment-methods-are-supported/,theme-demo-cpt,200,savelife_faqs-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_faqs); recommended 301 to / or 410
+https://www.giokerala.org/savelife_faqs/where-do-i-find-visual-composer-license-key-2/,/savelife_faqs/where-do-i-find-visual-composer-license-key-2/,theme-demo-cpt,200,savelife_faqs-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_faqs); recommended 301 to / or 410
+https://www.giokerala.org/savelife_faqs/where-do-i-find-visual-composer-license-key/,/savelife_faqs/where-do-i-find-visual-composer-license-key/,theme-demo-cpt,200,savelife_faqs-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_faqs); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-2-2/,/savelife_project/charity-poor-peoples-2-2/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-2/,/savelife_project/charity-poor-peoples-2/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-3-2/,/savelife_project/charity-poor-peoples-3-2/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-3/,/savelife_project/charity-poor-peoples-3/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-4-2-2/,/savelife_project/charity-poor-peoples-4-2-2/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-4-2/,/savelife_project/charity-poor-peoples-4-2/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-4-3/,/savelife_project/charity-poor-peoples-4-3/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-4/,/savelife_project/charity-poor-peoples-4/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-5-2-2/,/savelife_project/charity-poor-peoples-5-2-2/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-5-2/,/savelife_project/charity-poor-peoples-5-2/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-5-3/,/savelife_project/charity-poor-peoples-5-3/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-5/,/savelife_project/charity-poor-peoples-5/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-6-2-2/,/savelife_project/charity-poor-peoples-6-2-2/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-6-2/,/savelife_project/charity-poor-peoples-6-2/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-6-3/,/savelife_project/charity-poor-peoples-6-3/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-6/,/savelife_project/charity-poor-peoples-6/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-7-2/,/savelife_project/charity-poor-peoples-7-2/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-7/,/savelife_project/charity-poor-peoples-7/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples-8/,/savelife_project/charity-poor-peoples-8/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_project/charity-poor-peoples/,/savelife_project/charity-poor-peoples/,theme-demo-cpt,200,savelife_project-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (savelife_project); recommended 301 to / or 410
+https://www.giokerala.org/savelife_team/monijy-mazo/,/savelife_team/monijy-mazo/,theme-demo-cpt,200,savelife_team-sitemap.xml,,pending_decision,/team/,needs_client_approval,theme demo (savelife_team); recommended 301 to /team/ or 410
+https://www.giokerala.org/savelife_team/rizwana-sherin/,/savelife_team/rizwana-sherin/,theme-demo-cpt,200,savelife_team-sitemap.xml,,pending_decision,/team/,needs_client_approval,theme demo (savelife_team); recommended 301 to /team/ or 410
+https://www.giokerala.org/savelife_team/shifana-k/,/savelife_team/shifana-k/,theme-demo-cpt,200,savelife_team-sitemap.xml,,pending_decision,/team/,needs_client_approval,theme demo (savelife_team); recommended 301 to /team/ or 410
+https://www.giokerala.org/team_cat/our-volunteers-v1/,/team_cat/our-volunteers-v1/,theme-demo-cpt,200,team_cat-sitemap.xml,,pending_decision,/team/,needs_client_approval,theme demo (team_cat); recommended 301 to /team/ or 410
+https://www.giokerala.org/team_cat/state-leaders/,/team_cat/state-leaders/,theme-demo-cpt,200,team_cat-sitemap.xml,,pending_decision,/team/,needs_client_approval,theme demo (team_cat); recommended 301 to /team/ or 410
+https://www.giokerala.org/testimonials_cat/testimonials-v1/,/testimonials_cat/testimonials-v1/,theme-demo-cpt,200,testimonials_cat-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (testimonials_cat); recommended 301 to / or 410
+https://www.giokerala.org/testimonials_cat/testimonials-v2/,/testimonials_cat/testimonials-v2/,theme-demo-cpt,200,testimonials_cat-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (testimonials_cat); recommended 301 to / or 410
+https://www.giokerala.org/testimonials_cat/testimonials-v3/,/testimonials_cat/testimonials-v3/,theme-demo-cpt,200,testimonials_cat-sitemap.xml,,pending_decision,/,needs_client_approval,theme demo (testimonials_cat); recommended 301 to / or 410

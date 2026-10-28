@@ -1,0 +1,138 @@
+# GIO Kerala rebuild
+# Rule of thumb: anything that came from the client, the live site, or a
+# Cloudflare account stays out of git. Code, schema and audit docs go in.
+
+# ---------------------------------------------------------------------------
+# Secrets and local environment
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+.npmrc
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+credentials*.json
+service-account*.json
+*.secret
+*.secrets
+secrets/
+
+# ---------------------------------------------------------------------------
+# Migration evidence and client data (personal data, never committed)
+# Only the audit/plan scripts and a README under migration/ are tracked.
+# Frozen snapshots, staging bundles, reports, the client's DB dump, WXR
+# export and uploads ZIP live locally and in the gio-private R2 bucket.
+# ---------------------------------------------------------------------------
+/migration/*
+!/migration/scripts-audit/
+!/migration/scripts-plan/
+!/migration/README.md
+# Anchored to the repo root on purpose: app code may legitimately have
+# folders such as app/wp-content/uploads/ (legacy media route) or admin/exports/.
+snapshot-*/
+**/wp-source/
+migration-reports/
+/staging/
+/wp-content/
+/uploads/
+/archive/
+/exports/
+/backups/
+/private/
+*contact-submissions*.csv
+*contact-submissions*.json
+
+# Database dumps and exports (Drizzle migrations and docs/audit/*.sql stay tracked)
+*.sql.gz
+*.sql.bz2
+*.sql.xz
+*.sql.zip
+*.dump
+*.mysql
+*.bak
+*.wxr
+/*.sql
+*dump*.sql
+*backup*.sql
+*export*.sql
+/tools/**/fixtures/private/
+
+# Archives (uploads ZIPs, backup bundles)
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.gz
+*.7z
+*.rar
+
+# Local databases (wrangler/miniflare state also lives in .wrangler/)
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Audit inventory that embeds the live site's Google Maps API key
+# (see 04-STATUS-AND-DECISIONS.md C17). Kept locally; a redacted copy can be
+# tracked once approved. GitHub push protection would block it anyway.
+/docs/audit/inventory/url_inventory.csv
+
+# ---------------------------------------------------------------------------
+# Node / Next.js / OpenNext / Wrangler build output
+# ---------------------------------------------------------------------------
+node_modules/
+.pnpm-store/
+.next/
+.open-next/
+.wrangler/
+.vercel/
+out/
+build/
+dist/
+coverage/
+playwright-report/
+test-results/
+blob-report/
+*.tsbuildinfo
+next-env.d.ts
+cloudflare-env.d.ts.bak
+.turbo/
+.cache/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Python (audit scripts)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# ---------------------------------------------------------------------------
+# OS, editor, OneDrive
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+~$*
+*.tmp
+*.swp
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.claude/settings.local.json
