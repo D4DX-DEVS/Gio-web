@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import { ArticleSkeleton, LoadingRegion, PageHeroSkeleton, PostGridSkeleton } from "@/components/Skeletons";
 import { LeadersPage, ListingPage, PostPage, SectionsPage } from "@/components/views";
 import { getPublishedPage, getPublishedPost } from "@/lib/content";
 import { decodeSlug, stripHtml } from "@/lib/text";
@@ -21,14 +23,31 @@ export async function generateMetadata({ params }: PageProps<"/[slug]">): Promis
   return {};
 }
 
+// The page or post is looked up before any Suspense boundary, so a missing slug still answers 404.
+// The rest of the content then streams in behind a skeleton shaped like the page being opened.
 export default async function SlugPage({ params }: PageProps<"/[slug]">) {
   const slug = decodeSlug((await params).slug);
   const page = await getPublishedPage(slug);
   if (page) {
-    if (page.template === "leaders") return <LeadersPage page={page} />;
-    if (page.template === "post_listing") return <ListingPage page={page} pageNo={1} />;
-    return <SectionsPage page={page} />;
+    if (page.template === "leaders") return <Loading grid="cards" view={<LeadersPage page={page} />} />;
+    if (page.template === "post_listing") return <Loading grid="posts" view={<ListingPage page={page} pageNo={1} />} />;
+    return <Loading view={<SectionsPage page={page} />} />;
   }
-  if (await getPublishedPost(slug)) return <PostPage slug={slug} />;
+  if (await getPublishedPost(slug)) return <Loading view={<PostPage slug={slug} />} />;
   notFound();
+}
+
+function Loading({ view, grid }: { view: React.ReactNode; grid?: "posts" | "cards" }) {
+  return (
+    <Suspense
+      fallback={
+        <LoadingRegion label="Loading the page">
+          <PageHeroSkeleton />
+          {grid ? <PostGridSkeleton tabs={grid === "posts"} /> : <ArticleSkeleton />}
+        </LoadingRegion>
+      }
+    >
+      {view}
+    </Suspense>
+  );
 }

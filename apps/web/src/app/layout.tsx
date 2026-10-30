@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Noto_Sans_Malayalam, Poppins } from "next/font/google";
+import { Inter, Noto_Sans_Malayalam } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
-const malayalam = Noto_Sans_Malayalam({ variable: "--font-ml", subsets: ["malayalam"], weight: ["400", "500", "600", "700"] });
-const poppins = Poppins({ variable: "--font-head", subsets: ["latin"], weight: ["500", "600", "700"] });
+// One typeface for the whole site: Inter (variable, every weight). Inter has no Malayalam glyphs,
+// so Noto Sans Malayalam only fills in for Malayalam text (see --font-sans in globals.css).
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
+const malayalam = Noto_Sans_Malayalam({ variable: "--font-ml", subsets: ["malayalam"], weight: ["400", "500", "600", "700"], display: "swap" });
 
 // Every page reads D1 at request time.
 export const dynamic = "force-dynamic";
@@ -26,7 +27,7 @@ export const viewport: Viewport = { themeColor: "#185c9a" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} ${malayalam.variable} ${poppins.variable} antialiased`}>
+    <html lang="en" className={`${inter.variable} ${malayalam.variable} antialiased`}>
       <body className="min-h-screen flex flex-col">{children}</body>
     </html>
   );

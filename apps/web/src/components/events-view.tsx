@@ -18,12 +18,14 @@ export async function EventsView({ category }: { category?: string }) {
   return (
     <>
       <PageHero title={title} eyebrow="Programmes & camps" crumbs={[{ href: "/events/", label: "Events" }]} />
-      <Container className="py-14">
-        <h2 className="mb-6 font-display text-2xl font-bold text-brand-900">Upcoming</h2>
+      <Container className="py-8 sm:py-10">
+        <h2 className="reveal mb-4 font-display text-lg font-bold text-brand-900 sm:text-xl">Upcoming</h2>
         {upcoming.length ? (
-          <div className="grid gap-5 lg:grid-cols-2">
+          <div className="grid gap-4 sm:gap-5 lg:grid-cols-2 lg:gap-6">
             {upcoming.map((e) => (
-              <EventCard key={e.id} event={e} />
+              <div key={e.id} className="reveal">
+                <EventCard event={e} />
+              </div>
             ))}
           </div>
         ) : (
@@ -31,10 +33,12 @@ export async function EventsView({ category }: { category?: string }) {
         )}
         {past.length > 0 && (
           <>
-            <h2 className="mb-6 mt-14 font-display text-2xl font-bold text-brand-900">Past events</h2>
-            <div className="grid gap-5 lg:grid-cols-2">
+            <h2 className="reveal mb-4 mt-10 font-display text-lg font-bold text-brand-900 sm:text-xl">Past events</h2>
+            <div className="grid gap-4 sm:gap-5 lg:grid-cols-2 lg:gap-6">
               {past.map((e) => (
-                <EventCard key={e.id} event={e} />
+                <div key={e.id} className="reveal">
+                  <EventCard event={e} />
+                </div>
               ))}
             </div>
           </>

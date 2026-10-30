@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CalendarIcon, PinIcon } from "@/components/Icons";
 import { Img } from "@/components/Img";
+import { LightboxScope } from "@/components/LightboxScope";
 import { Container, PageHero } from "@/components/ui";
 import { getPublishedEvent } from "@/lib/content";
 import { sanitize } from "@/lib/sanitize";
@@ -23,25 +24,25 @@ export default async function EventPage({ params }: PageProps<"/event/[slug]">) 
   return (
     <>
       <PageHero title={event.title} eyebrow="Event" crumbs={[{ href: "/events/", label: "Events" }]} />
-      <Container className="grid gap-10 py-14 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-        <div>
+      <Container className="grid gap-6 py-8 sm:py-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-10">
+        <LightboxScope>
           {image && (
-            <figure className="mb-8 overflow-hidden rounded-2xl shadow-xl shadow-brand-900/10 ring-1 ring-line">
-              <Img media={image} eager className="h-auto w-full" />
+            <figure className="group mx-auto mb-6 w-fit overflow-hidden rounded-2xl shadow-lg shadow-brand-900/10 ring-1 ring-line">
+              <Img media={image} eager className="zoom-media h-auto max-h-[64vh] w-auto max-w-full" />
             </figure>
           )}
-          {body && <div lang={langOf(stripHtml(body, 300))} className="prose-gio" dangerouslySetInnerHTML={{ __html: body }} />}
+          {body && <div lang={langOf(stripHtml(body, 300))} className="prose-gio reveal-group" dangerouslySetInnerHTML={{ __html: body }} />}
           {report && (
-            <p className="mt-8">
+            <p className="mt-5">
               <Link href={postHref(report.slug)} className="btn btn-primary">
                 Read the report: {report.title}
               </Link>
             </p>
           )}
-        </div>
-        <aside className="h-fit space-y-5 rounded-2xl border border-line bg-paper p-6 lg:sticky lg:top-28">
+        </LightboxScope>
+        <aside className="reveal h-fit space-y-4 rounded-2xl border border-line bg-paper p-4 text-[0.9375rem] sm:p-5 lg:sticky lg:top-[calc(var(--header-h)+1.5rem)]">
           <div className="flex gap-3">
-            <CalendarIcon className="mt-0.5 h-5 w-5 shrink-0 text-brand-500" />
+            <CalendarIcon className="mt-0.5 h-4 w-4 shrink-0 text-brand-500" />
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider text-muted">When</p>
               <p className="font-medium">
@@ -58,7 +59,7 @@ export default async function EventPage({ params }: PageProps<"/event/[slug]">) 
           </div>
           {venue && (
             <div className="flex gap-3">
-              <PinIcon className="mt-0.5 h-5 w-5 shrink-0 text-brand-500" />
+              <PinIcon className="mt-0.5 h-4 w-4 shrink-0 text-brand-500" />
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted">Where</p>
                 <p className="font-medium">{venue.name}</p>

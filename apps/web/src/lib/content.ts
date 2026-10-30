@@ -421,9 +421,9 @@ export async function listDocuments() {
     .filter((d) => d.file !== null);
 }
 
-/** Featured images of published posts and events: the site's real photo collections. */
-export async function galleryCollections() {
-  const [postRows, eventRows] = await Promise.all([listPosts({}, 1, 100), listEvents({ limit: 100 })]);
+/** Featured images of published posts and events: the site's real photo collections. `limit` caps how many of each are read. */
+export async function galleryCollections(limit = 100) {
+  const [postRows, eventRows] = await Promise.all([listPosts({}, 1, limit), listEvents({ limit })]);
   const collections = [
     ...postRows.items.filter((p) => p.image).map((p) => ({ href: `/${encodeURIComponent(p.slug)}/`, title: p.title, date: p.publishedAt, image: p.image! })),
     ...eventRows.filter((e) => e.image).map((e) => ({ href: `/event/${encodeURIComponent(e.slug)}/`, title: e.title, date: e.startsAt, image: e.image! })),

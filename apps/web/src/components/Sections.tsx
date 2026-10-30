@@ -3,12 +3,13 @@ import type { LayoutItem, LayoutMedia, LayoutSection, PageLayout } from "@gio/db
 import { encodePath, type PublicMedia } from "@/lib/content";
 import { sanitize } from "@/lib/sanitize";
 import { langOf } from "@/lib/text";
-import { ContactForm } from "./ContactForm";
+import { ChannelVideos } from "./ChannelVideos";
+import { ContactSection } from "./ContactSection";
 import { HeroCarousel } from "./HeroCarousel";
-import { SocialIcon } from "./Icons";
 import { Img } from "./Img";
+import { LightboxScope } from "./LightboxScope";
+import { PosterMarquee } from "./PosterMarquee";
 import { Container, SectionHeading } from "./ui";
-import { YouTube } from "./YouTube";
 
 export function layoutMedia(m: LayoutMedia | null, alt?: string | null): PublicMedia | null {
   if (!m) return null;
@@ -53,9 +54,22 @@ interface Props {
 export function Sections({ layout, inserts = {}, pageTitle }: Props) {
   const out: React.ReactNode[] = [];
   const secs = layout.sections;
+  // A contact form takes the page's contact details and map into one block (Contact page).
+  const form = secs.find((s) => s.type === "contact_form");
+  const contactDetails = form && secs.find((s) => s.type === "rich_text" && s.data.kind === "contact_details");
+  const contactMap = form && secs.find((s) => s.type === "map");
   for (let i = 0; i < secs.length; i++) {
     const s = secs[i];
     const next = secs[i + 1];
+    if (s === contactDetails || s === contactMap) {
+      if (inserts[i]) out.push(<div key={`ins-${i}`}>{inserts[i]}</div>);
+      continue;
+    }
+    if (s === form) {
+      out.push(<ContactSection key={s.id} form={s} details={contactDetails} map={contactMap} />);
+      if (inserts[i]) out.push(<div key={`ins-${i}`}>{inserts[i]}</div>);
+      continue;
+    }
     // An image directly followed by text is shown side by side, as on the old About page.
     if (s.type === "image" && next?.type === "rich_text" && s.items[0]?.media) {
       out.push(<ImageWithText key={s.id} image={s} text={next} />);
@@ -73,14 +87,42 @@ export function Sections({ layout, inserts = {}, pageTitle }: Props) {
 function ImageWithText({ image, text }: { image: LayoutSection; text: LayoutSection }) {
   const item = image.items[0];
   return (
-    <section className="py-14 sm:py-20">
-      <Container className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
-        <Linked item={item} className="block overflow-hidden rounded-3xl shadow-xl shadow-brand-900/10 ring-1 ring-line lg:sticky lg:top-28">
-          <Img media={layoutMedia(item.media, item.altText)} className="h-auto w-full" />
-        </Linked>
-        <RichText html={String(text.data.html ?? "")} />
-      </Container>
+    <section className="py-9 sm:py-12">
+      {/* Unlinked photos (here and in the text) open full size in the lightbox. */}
+      <LightboxScope>
+        <Container className="grid grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-10">
+          <Linked item={item} className="reveal group mx-auto block w-full max-w-sm overflow-hidden rounded-2xl shadow-lg shadow-brand-900/10 ring-1 ring-line md:sticky md:top-[calc(var(--header-h)+1.5rem)] md:max-w-none">
+            <Img media={layoutMedia(item.media, item.altText)} className="zoom-media reveal-img h-auto w-full" />
+          </Linked>
+          <RichText html={String(text.data.html ?? "")} className="reveal-group" />
+        </Container>
+      </LightboxScope>
     </section>
+  );
+}
+
+/** A standalone poster on a light panel with a diagonal brand band, rings and red corner brackets. */
+function PosterSpotlight({ item }: { item: LayoutItem }) {
+  const media = layoutMedia(item.media, item.altText);
+  if (!media) return null;
+  const bracket = "pointer-events-none absolute h-8 w-8 border-accent-600 transition-all duration-500 group-hover/poster:h-12 group-hover/poster:w-12";
+  return (
+    <div className="reveal relative isolate overflow-hidden rounded-3xl bg-paper px-5 py-8 ring-1 ring-line sm:px-10 sm:py-10 lg:py-12">
+      <div aria-hidden className="absolute inset-x-[-10%] top-1/2 -z-10 h-[45%] -translate-y-1/2 -skew-y-6 bg-gradient-to-r from-brand-800 via-brand-600 to-brand-800" />
+      <div aria-hidden className="absolute inset-x-[-10%] top-1/2 -z-10 mt-[12%] h-2 -skew-y-6 bg-accent-600" />
+      <div aria-hidden className="absolute left-1/2 top-1/2 -z-10 h-[26rem] w-[26rem] -translate-x-1/2 lg:h-[33rem] lg:w-[33rem] -translate-y-1/2 rounded-full border border-brand-200" />
+      <div aria-hidden className="absolute left-1/2 top-1/2 -z-10 h-[34rem] w-[34rem] -translate-x-1/2 lg:h-[43rem] lg:w-[43rem] -translate-y-1/2 rounded-full border border-dashed border-brand-200" />
+
+      <div className="group/poster relative mx-auto w-full max-w-[16rem] sm:max-w-xs lg:max-w-sm">
+        <span aria-hidden className={`${bracket} -left-3 -top-3 rounded-tl-xl border-l-[3px] border-t-[3px]`} />
+        <span aria-hidden className={`${bracket} -right-3 -top-3 rounded-tr-xl border-r-[3px] border-t-[3px]`} />
+        <span aria-hidden className={`${bracket} -bottom-3 -left-3 rounded-bl-xl border-b-[3px] border-l-[3px]`} />
+        <span aria-hidden className={`${bracket} -bottom-3 -right-3 rounded-br-xl border-b-[3px] border-r-[3px]`} />
+        <Linked item={item} className="relative block overflow-hidden rounded-lg bg-white shadow-xl shadow-brand-900/30 ring-[3px] ring-white">
+          <Img media={media} className="reveal-img h-auto w-full transition duration-700 group-hover/poster:scale-[1.03]" />
+        </Linked>
+      </div>
+    </div>
   );
 }
 
@@ -96,11 +138,11 @@ function Section({ section: s, pageTitle }: { section: LayoutSection; pageTitle?
     }
     case "image_banner":
       return (
-        <section className="py-10">
+        <section className="py-6 sm:py-9">
           <Container>
             {s.items.map((i) => (
-              <Linked key={i.id} item={i} className="group block overflow-hidden rounded-2xl shadow-lg shadow-brand-900/10 ring-1 ring-line transition hover:shadow-xl">
-                <Img media={layoutMedia(i.media, i.altText)} className="h-auto w-full transition duration-500 group-hover:scale-[1.01]" />
+              <Linked key={i.id} item={i} className="reveal group block overflow-hidden rounded-2xl shadow-md shadow-brand-900/10 ring-1 ring-line transition hover:shadow-xl">
+                <Img media={layoutMedia(i.media, i.altText)} className="reveal-img h-auto w-full transition duration-500 group-hover:scale-[1.01]" />
               </Linked>
             ))}
           </Container>
@@ -108,65 +150,63 @@ function Section({ section: s, pageTitle }: { section: LayoutSection; pageTitle?
       );
     case "image":
       return (
-        <section className="py-10">
-          <Container className="flex justify-center">
-            {s.items.map((i) => (
-              <Linked key={i.id} item={i} className="block max-w-xl overflow-hidden rounded-2xl shadow-lg shadow-brand-900/10 ring-1 ring-line">
-                <Img media={layoutMedia(i.media, i.altText)} className="h-auto w-full" />
-              </Linked>
-            ))}
-          </Container>
+        <section className="py-8 sm:py-10">
+          <LightboxScope>
+            <Container className="space-y-6">
+              {s.items.map((i) => (
+                <PosterSpotlight key={i.id} item={i} />
+              ))}
+            </Container>
+          </LightboxScope>
         </section>
       );
     case "rich_text":
       return (
-        <section className="py-12">
-          <Container className="max-w-4xl">
-            <RichText html={String(s.data.html ?? "")} />
-          </Container>
+        <section className="py-8 sm:py-10">
+          <LightboxScope>
+            <Container className="max-w-4xl">
+              <RichText html={String(s.data.html ?? "")} className="reveal-group" />
+            </Container>
+          </LightboxScope>
         </section>
       );
     case "poster_slider":
       return (
-        <section className="bg-paper py-16">
+        <section className="bg-paper py-10 sm:py-12 lg:py-14">
           <Container>
             {title && <SectionHeading eyebrow="Highlights" title={title} />}
-            <div className="-mx-4 flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pb-4 [scrollbar-width:thin] sm:mx-0 sm:px-0">
-              {s.items.map((i) => (
-                <Linked key={i.id} item={i} className="group w-64 shrink-0 snap-start overflow-hidden rounded-2xl bg-white shadow-md ring-1 ring-line transition hover:-translate-y-1 hover:shadow-xl sm:w-72">
-                  <Img media={layoutMedia(i.media, i.altText)} className="aspect-[4/5] h-auto w-full object-cover" />
-                </Linked>
-              ))}
-            </div>
+            {/* Tapping a poster without a page link opens it full size in the lightbox. */}
+            <LightboxScope className="reveal">
+              <PosterMarquee label={title ?? "Highlights"}>
+                {s.items.map((i) => (
+                  // Spacing is padding, not gap, so each copy of the row is exactly one loop wide.
+                  <div key={i.id} className="shrink-0 pr-3.5 sm:pr-4 lg:pr-5">
+                    {/* Hover grows the whole card (not the image inside its frame); PosterMarquee leaves room for it. */}
+                    <Linked item={i} className="relative block w-48 cursor-pointer overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-line transition duration-300 ease-(--ease-soft) hover:z-10 hover:scale-[1.06] hover:shadow-lift motion-reduce:hover:scale-100 sm:w-56 lg:w-64 2xl:w-72 [&_img]:cursor-pointer!">
+                      <Img media={layoutMedia(i.media, i.altText)} className="skeleton aspect-[4/5] h-auto w-full object-cover" />
+                    </Linked>
+                  </div>
+                ))}
+              </PosterMarquee>
+            </LightboxScope>
           </Container>
         </section>
       );
-    case "featured_video": {
-      const id = String(s.data.youtubeId ?? "");
-      return (
-        <section className="relative overflow-hidden bg-brand-900 py-16 text-white sm:py-20">
-          <div className="pointer-events-none absolute -left-32 top-0 h-96 w-96 rounded-full bg-brand-500/30 blur-3xl" />
-          <Container className="relative max-w-5xl">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-accent-500">GIO Kerala on YouTube</p>
-            <h2 className="mb-8 font-display text-2xl font-bold sm:text-3xl">{title}</h2>
-            <YouTube id={id} title={title ?? "GIO Kerala video"} />
-          </Container>
-        </section>
-      );
-    }
+    case "featured_video":
+      return <ChannelVideos featuredId={String(s.data.youtubeId ?? "")} title={title ?? "Watch"} items={s.items} maxCards={Number(s.data.maxCards) || 6} showLatest={s.data.showLatest !== false} />;
     case "logo_carousel": {
       const logos = s.items.map((i) => ({ i, m: layoutMedia(i.media, i.altText) })).filter((x) => x.m);
       if (!logos.length) return null;
       return (
-        <section className="py-16">
+        <section className="py-9 sm:py-12">
           <Container>
-            <p className="mb-8 text-center text-sm font-semibold uppercase tracking-[0.2em] text-muted">{title}</p>
+            <p className="reveal mb-5 text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted sm:mb-6 sm:text-sm">{title}</p>
           </Container>
-          <div className="group relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-            <div className="flex w-max animate-[marquee_40s_linear_infinite] gap-14 group-hover:[animation-play-state:paused]">
+          <div className="reveal group relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <div className="flex w-max animate-[marquee_40s_linear_infinite] gap-10 lg:gap-14 group-hover:[animation-play-state:paused]">
               {[...logos, ...logos].map(({ i, m }, k) => (
-                <div key={`${i.id}-${k}`} className="flex h-20 w-40 shrink-0 items-center justify-center" aria-hidden={k >= logos.length}>
-                  <img src={m!.url} alt={k < logos.length ? m!.alt : ""} className="max-h-20 w-auto max-w-full object-contain opacity-80 grayscale transition hover:opacity-100 hover:grayscale-0" loading="lazy" />
+                <div key={`${i.id}-${k}`} className="flex h-14 w-28 shrink-0 items-center justify-center lg:h-16 lg:w-36" aria-hidden={k >= logos.length}>
+                  <img src={m!.url} alt={k < logos.length ? m!.alt : ""} className="max-h-14 w-auto max-w-full object-contain lg:max-h-16 opacity-80 grayscale transition duration-300 hover:scale-110 hover:opacity-100 hover:grayscale-0" loading="lazy" />
                 </div>
               ))}
             </div>
@@ -174,42 +214,22 @@ function Section({ section: s, pageTitle }: { section: LayoutSection; pageTitle?
         </section>
       );
     }
-    case "instagram_feed": {
-      const handle = String(s.data.handle ?? "");
-      const url = String(s.data.profileUrl ?? `https://www.instagram.com/${handle}/`);
-      return (
-        <section className="py-14">
-          <Container>
-            <div className="flex flex-col items-center justify-between gap-6 rounded-3xl bg-gradient-to-r from-[#833ab4] via-[#e1306c] to-[#f77737] p-8 text-white shadow-xl sm:flex-row sm:p-10">
-              <div className="flex items-center gap-5">
-                <span className="rounded-2xl bg-white/20 p-4">
-                  <SocialIcon name="instagram" className="h-9 w-9" />
-                </span>
-                <div>
-                  <p className="text-sm uppercase tracking-widest text-white/80">Follow us on Instagram</p>
-                  <p className="font-display text-2xl font-bold">@{handle}</p>
-                </div>
-              </div>
-              <a href={url} target="_blank" rel="noopener noreferrer" className="rounded-full bg-white px-6 py-3 font-semibold text-[#c13584] shadow transition hover:scale-105">
-                Open Instagram
-              </a>
-            </div>
-          </Container>
-        </section>
-      );
-    }
+    case "instagram_feed":
+      // Removed at the user's request (2026-10-29): the "follow us" banner only repeated the header/footer link.
+      // The section type stays so a real feed can be rendered here if the client settles decision C11.
+      return null;
     case "embed": {
       const src = String(s.data.src ?? "");
       if (!/^https:\/\//.test(src)) return null;
       return (
         <section className="py-8">
           <Container>
-            <div className="mb-4 flex justify-end">
+            <div className="mb-3 flex justify-end">
               <a href={src} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
                 Open in a new tab ↗
               </a>
             </div>
-            <iframe src={src} title={String(s.data.title ?? pageTitle ?? "Embedded content")} className="h-[80vh] w-full rounded-2xl border border-line shadow-lg" allowFullScreen loading="lazy" />
+            <iframe src={src} title={String(s.data.title ?? pageTitle ?? "Embedded content")} className="reveal h-[75vh] w-full rounded-2xl border border-line shadow-md" allowFullScreen loading="lazy" />
           </Container>
         </section>
       );
@@ -218,31 +238,23 @@ function Section({ section: s, pageTitle }: { section: LayoutSection; pageTitle?
       const src = String(s.data.embedUrl ?? "");
       if (!src.startsWith("https://www.google.com/maps/embed?")) return null;
       return (
-        <section className="pb-16">
+        <section className="pb-10">
           <Container>
-            <iframe src={src} title={String(s.data.title ?? "Office location map")} className="h-96 w-full rounded-2xl border border-line shadow-lg" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+            <iframe src={src} title={String(s.data.title ?? "Office location map")} className="reveal h-64 w-full rounded-2xl border border-line shadow-md sm:h-80" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
           </Container>
         </section>
       );
     }
-    case "contact_form": {
-      const fields = Array.isArray(s.data.fields) ? (s.data.fields as { name: string; label: string; type: string; required: boolean }[]) : [];
-      return (
-        <section className="pt-14">
-          <Container className="max-w-3xl">
-            <ContactForm heading={String(s.data.heading ?? "Contact us")} fields={fields} submitLabel={String(s.data.submitLabel ?? "Send")} />
-          </Container>
-        </section>
-      );
-    }
+    case "contact_form":
+      return <ContactSection form={s} />;
     case "cta":
       return (
-        <section className="py-14">
+        <section className="py-10 sm:py-12">
           <Container>
-            <div className="rounded-3xl bg-brand-600 p-10 text-center text-white">
-              {title && <h2 className="font-display text-3xl font-bold">{title}</h2>}
+            <div className="reveal rounded-3xl bg-brand-600 p-7 text-center text-white sm:p-10">
+              {title && <h2 className="font-display text-xl font-bold sm:text-2xl lg:text-[1.75rem]">{title}</h2>}
               {s.items.map((i) => (
-                <Linked key={i.id} item={i} className="mt-6 inline-block rounded-full bg-white px-6 py-3 font-semibold text-brand-700">
+                <Linked key={i.id} item={i} className="btn-fx mt-4 inline-block rounded-full bg-white px-6 py-2.5 text-[0.9375rem] font-semibold text-brand-700 hover:bg-brand-50">
                   {i.linkLabel ?? i.heading ?? "Learn more"}
                 </Linked>
               ))}

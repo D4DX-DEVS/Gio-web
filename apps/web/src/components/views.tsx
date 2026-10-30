@@ -6,6 +6,7 @@ import { sanitize } from "@/lib/sanitize";
 import { formatDate, langOf, stripHtml } from "@/lib/text";
 import { SocialIcon } from "./Icons";
 import { Img } from "./Img";
+import { LightboxScope } from "./LightboxScope";
 import { Sections } from "./Sections";
 import { Container, EmptyState, PageHero, Pagination, PostCard } from "./ui";
 
@@ -26,7 +27,7 @@ export async function SectionsPage({ page }: { page: PageRow }) {
           <Sections layout={layout} pageTitle={page.title} />
         </div>
       ) : (
-        <Container className="py-16">
+        <Container className="py-10">
           <EmptyState title="This page has no published content yet." />
         </Container>
       )}
@@ -41,31 +42,31 @@ export async function LeadersPage({ page }: { page: PageRow }) {
   return (
     <>
       <PageHero title={page.title} eyebrow="Our Leaders" crumbs={[{ href: `/${page.slug}/`, label: page.title }]} />
-      <div className="sticky top-[68px] z-30 border-b border-line bg-white/90 backdrop-blur md:top-[96px]">
-        <Container className="flex gap-2 overflow-x-auto py-3">
+      <div className="sticky top-(--header-h) z-30 border-b border-line bg-white/90 backdrop-blur">
+        <Container className="flex gap-2 overflow-x-auto py-2">
           {LEADER_NAV.map((l) => (
-            <Link key={l.href} href={l.href} aria-current={l.scope === scope ? "page" : undefined} className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition ${l.scope === scope ? "bg-brand-600 text-white" : "bg-brand-50 text-brand-700 hover:bg-brand-100"}`}>
+            <Link key={l.href} href={l.href} aria-current={l.scope === scope ? "page" : undefined} className={`btn-fx whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-semibold sm:text-[0.9375rem] ${l.scope === scope ? "bg-brand-600 text-white" : "bg-brand-50 text-brand-700 hover:bg-brand-100"}`}>
               {l.label}
             </Link>
           ))}
         </Container>
       </div>
-      <Container className="py-14">
+      <Container className="py-8 sm:py-10">
         {!total && <EmptyState title="No leaders published for this page yet." />}
         {scope === "former" ? (
-          <div className="relative space-y-12 border-l-2 border-brand-100 pl-6 sm:pl-10">
+          <div className="relative space-y-9 border-l-2 border-brand-100 pl-6 sm:pl-10">
             {[...groups].reverse().map((g) => (
               <section key={g.id} className="relative">
                 <span className="absolute -left-[33px] top-1 h-4 w-4 rounded-full border-4 border-white bg-accent-600 shadow sm:-left-[49px]" />
-                <h2 className="mb-5 font-display text-xl font-bold text-brand-800">{g.heading ?? g.termLabel}</h2>
+                <h2 className="reveal mb-4 font-display text-lg font-bold text-brand-800 sm:text-xl">{g.heading ?? g.termLabel}</h2>
                 <LeaderGrid leaders={g.leaders} compact />
               </section>
             ))}
           </div>
         ) : (
           groups.map((g) => (
-            <section key={g.id} className="mb-12">
-              {g.heading && <h2 className="mb-6 font-display text-2xl font-bold text-brand-800">{g.heading}</h2>}
+            <section key={g.id} className="mb-9 last:mb-0">
+              {g.heading && <h2 className="reveal mb-4 font-display text-lg font-bold text-brand-800 sm:text-xl">{g.heading}</h2>}
               <LeaderGrid leaders={g.leaders} featuredFirst={scope === "state"} />
             </section>
           ))
@@ -81,15 +82,17 @@ function LeaderGrid({ leaders, compact = false, featuredFirst = false }: { leade
   return (
     <>
       {featured.length > 0 && (
-        <div className="mb-8 grid grid-cols-2 gap-4 sm:gap-6 lg:mx-auto lg:max-w-3xl">
+        <div className="reveal-group mx-auto mb-5 grid max-w-lg grid-cols-2 gap-4 sm:gap-5">
           {featured.map((l) => (
             <LeaderCard key={l.id} l={l} large />
           ))}
         </div>
       )}
-      <div className={`grid gap-5 ${compact ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5" : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"}`}>
+      <div className={`grid gap-3 sm:gap-4 lg:gap-5 ${compact ? "grid-cols-2 min-[480px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-6" : "grid-cols-2 sm:grid-cols-4 lg:grid-cols-6"}`}>
         {rest.map((l) => (
-          <LeaderCard key={l.id} l={l} />
+          <div key={l.id} className="reveal">
+            <LeaderCard l={l} />
+          </div>
         ))}
       </div>
     </>
@@ -98,25 +101,25 @@ function LeaderGrid({ leaders, compact = false, featuredFirst = false }: { leade
 
 function LeaderCard({ l, large = false }: { l: Awaited<ReturnType<typeof getLeaderGroups>>[number]["leaders"][number]; large?: boolean }) {
   return (
-    <article className="group overflow-hidden rounded-2xl border border-line bg-white text-center shadow-sm transition hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-900/10">
-      <div className="aspect-square overflow-hidden bg-brand-50">
-        <Img media={l.photo} alt={l.name} className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105" fallbackLabel={`No photo published for ${l.name}`} />
+    <article className="card-lift group h-full overflow-hidden rounded-2xl border border-line bg-white text-center shadow-card hover:border-brand-200">
+      <div className={`aspect-square overflow-hidden bg-brand-50 ${l.photo ? "skeleton" : ""}`}>
+        <Img media={l.photo} alt={l.name} className="zoom-media reveal-img h-full w-full object-cover object-top" fallbackLabel={`No photo published for ${l.name}`} />
       </div>
-      <div className={large ? "p-5" : "p-3 sm:p-4"}>
-        <h3 lang={langOf(l.name)} className={`font-display font-semibold leading-snug text-brand-900 ${large ? "text-lg" : "text-sm sm:text-base"}`}>
+      <div className={large ? "p-3.5 sm:p-4" : "p-2.5 sm:p-3"}>
+        <h3 lang={langOf(l.name)} className={`font-display font-semibold leading-snug text-brand-900 ${large ? "text-base sm:text-lg" : "text-sm sm:text-[0.9375rem]"}`}>
           {l.name}
         </h3>
         {l.role && <p className={`mt-1 font-medium text-accent-600 ${large ? "text-sm" : "text-xs sm:text-sm"}`}>{l.role}</p>}
-        {l.description && <p className="mt-1 text-xs text-muted">{l.description}</p>}
+        {l.description && <p className="mt-1.5 text-sm text-muted">{l.description}</p>}
         {(l.facebook || l.instagram) && (
-          <div className="mt-3 flex justify-center gap-2">
+          <div className="mt-2.5 flex justify-center gap-1.5">
             {l.facebook && (
-              <a href={l.facebook} target="_blank" rel="noopener noreferrer" aria-label={`${l.name} on Facebook`} className="rounded-full bg-brand-50 p-2 text-brand-600 transition hover:bg-brand-600 hover:text-white">
+              <a href={l.facebook} target="_blank" rel="noopener noreferrer" aria-label={`${l.name} on Facebook`} className="rounded-full bg-brand-50 p-1.5 text-brand-600 transition hover:scale-110 hover:bg-brand-600 hover:text-white">
                 <SocialIcon name="facebook" className="h-3.5 w-3.5" />
               </a>
             )}
             {l.instagram && (
-              <a href={l.instagram} target="_blank" rel="noopener noreferrer" aria-label={`${l.name} on Instagram`} className="rounded-full bg-brand-50 p-2 text-brand-600 transition hover:bg-brand-600 hover:text-white">
+              <a href={l.instagram} target="_blank" rel="noopener noreferrer" aria-label={`${l.name} on Instagram`} className="rounded-full bg-brand-50 p-1.5 text-brand-600 transition hover:scale-110 hover:bg-brand-600 hover:text-white">
                 <SocialIcon name="instagram" className="h-3.5 w-3.5" />
               </a>
             )}
@@ -177,20 +180,20 @@ export function PostGrid({
   return (
     <>
       <PageHero title={title} eyebrow={eyebrow} image={image} crumbs={[{ href: base, label: title }]} subtitle={page > 1 ? `Page ${page} of ${pages}` : undefined} />
-      <Container className="py-14">
+      <Container className="py-8 sm:py-10">
         {tabs && (
-          <div className="mb-10 flex flex-wrap gap-2">
+          <div className="mb-6 flex flex-wrap gap-2">
             {tabs.map((t) => (
-              <Link key={t.href} href={t.href} aria-current={t.href === current ? "page" : undefined} className={`rounded-full px-4 py-2 text-sm font-semibold transition ${t.href === current ? "bg-brand-600 text-white" : "bg-brand-50 text-brand-700 hover:bg-brand-100"}`}>
+              <Link key={t.href} href={t.href} aria-current={t.href === current ? "page" : undefined} className={`btn-fx rounded-full px-4 py-1.5 text-sm font-semibold sm:text-[0.9375rem] ${t.href === current ? "bg-brand-600 text-white" : "bg-brand-50 text-brand-700 hover:bg-brand-100"}`}>
                 {t.label}
               </Link>
             ))}
           </div>
         )}
         {items.length ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {items.map((p, i) => (
-              <div key={p.id} className="animate-fade-up" style={{ animationDelay: `${Math.min(i, 8) * 50}ms` }}>
+          <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
+            {items.map((p) => (
+              <div key={p.id} className="reveal">
                 <PostCard post={p} />
               </div>
             ))}
@@ -222,8 +225,8 @@ export async function PostPage({ slug }: { slug: string }) {
       <header className="relative overflow-hidden bg-brand-900 text-white">
         {card.image && <Img media={card.image} alt="" eager className="absolute inset-0 h-full w-full scale-110 object-cover opacity-20 blur-sm" />}
         <div className="absolute inset-0 bg-gradient-to-b from-brand-900/60 to-brand-900" />
-        <Container className="relative max-w-4xl py-14 sm:py-20">
-          <nav aria-label="Breadcrumb" className="mb-5 text-sm text-brand-200">
+        <Container className="relative max-w-4xl pb-14 pt-8 sm:pb-16 sm:pt-11">
+          <nav aria-label="Breadcrumb" className="mb-3 text-sm text-brand-200">
             <Link href="/" className="hover:text-white">
               Home
             </Link>
@@ -238,27 +241,29 @@ export async function PostPage({ slug }: { slug: string }) {
               </Link>
             )}
           </nav>
-          <h1 lang={langOf(title)} className="animate-fade-up font-display text-3xl font-bold leading-tight sm:text-5xl sm:leading-tight">
+          <h1 lang={langOf(title)} className="animate-fade-up font-display text-[1.625rem] font-bold leading-tight sm:text-3xl sm:leading-tight lg:text-[2.5rem] lg:leading-tight">
             {title}
           </h1>
           {post.publishedAt && (
-            <p className="mt-5 text-sm text-brand-200">
+            <p className="mt-2 text-sm text-brand-200 sm:text-base">
               <time dateTime={post.publishedAt.toISOString()}>{formatDate(post.publishedAt)}</time>
             </p>
           )}
         </Container>
       </header>
-      <Container className="max-w-4xl py-12">
-        {card.image && (
-          <figure className="-mt-24 mb-10 overflow-hidden rounded-2xl shadow-2xl shadow-brand-900/20 ring-1 ring-line sm:-mt-28">
-            <Img media={card.image} eager className="h-auto w-full" />
-          </figure>
-        )}
-        {body ? <div lang={langOf(stripHtml(body, 400))} className="prose-gio" dangerouslySetInnerHTML={{ __html: body }} /> : <EmptyState title="This post has no text." />}
+      <Container className="max-w-4xl py-7 sm:py-10">
+        <LightboxScope>
+          {card.image && (
+            <figure className="group relative mx-auto -mt-14 mb-7 w-fit overflow-hidden rounded-2xl shadow-xl shadow-brand-900/20 ring-1 ring-line sm:-mt-16">
+              <Img media={card.image} eager className="zoom-media h-auto max-h-[64vh] w-auto max-w-full" />
+            </figure>
+          )}
+          {body ? <div lang={langOf(stripHtml(body, 400))} className="prose-gio reveal-group" dangerouslySetInnerHTML={{ __html: body }} /> : <EmptyState title="This post has no text." />}
+        </LightboxScope>
         {tags.length > 0 && (
-          <div className="mt-10 flex flex-wrap gap-2 border-t border-line pt-6">
+          <div className="reveal mt-8 flex flex-wrap gap-2 border-t border-line pt-5">
             {tags.map((t) => (
-              <Link key={t.slug} href={`/tag/${encodeURIComponent(t.slug)}/`} className="rounded-full bg-brand-50 px-3 py-1 text-sm text-brand-700 hover:bg-brand-100">
+              <Link key={t.slug} href={`/tag/${encodeURIComponent(t.slug)}/`} className="btn-fx rounded-full bg-brand-50 px-3.5 py-1 text-sm text-brand-700 hover:bg-brand-100">
                 #{t.name}
               </Link>
             ))}
@@ -266,12 +271,14 @@ export async function PostPage({ slug }: { slug: string }) {
         )}
       </Container>
       {related.length > 0 && (
-        <section className="bg-paper py-14">
+        <section className="bg-paper py-10 sm:py-12">
           <Container>
-            <h2 className="mb-8 font-display text-2xl font-bold text-brand-900">More stories</h2>
-            <div className="grid gap-6 md:grid-cols-3">
+            <h2 className="reveal mb-5 font-display text-[1.375rem] font-bold leading-tight text-brand-900 sm:mb-6 sm:text-[1.625rem] lg:text-[1.875rem]">More stories</h2>
+            <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
               {related.map((p) => (
-                <PostCard key={p.id} post={p} />
+                <div key={p.id} className="reveal">
+                  <PostCard post={p} />
+                </div>
               ))}
             </div>
           </Container>
