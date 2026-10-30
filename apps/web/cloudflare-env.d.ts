@@ -11,6 +11,10 @@ interface __BaseEnv_CloudflareEnv {
 	NEXTJS_ENV: string;
 	BETTER_AUTH_SECRET: string;
 	BETTER_AUTH_URL: string;
+	ADMIN_USERNAME: string;
+	ADMIN_PASSWORD: string;
+	ADMIN_NAME: string;
+	ADMIN_TOTP_SECRET: string;
 	WORKER_SELF_REFERENCE: Service<typeof import("./worker").default>;
 }
 declare namespace Cloudflare {
@@ -24,7 +28,7 @@ type StringifyValues<EnvType extends Record<string, unknown>> = {
 	[Binding in keyof EnvType]: EnvType[Binding] extends string ? EnvType[Binding] : string;
 };
 declare namespace NodeJS {
-	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "NEXTJS_ENV" | "BETTER_AUTH_SECRET" | "BETTER_AUTH_URL">> {}
+	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "NEXTJS_ENV" | "BETTER_AUTH_SECRET" | "BETTER_AUTH_URL" | "ADMIN_USERNAME" | "ADMIN_PASSWORD" | "ADMIN_NAME" | "ADMIN_TOTP_SECRET">> {}
 }
 declare module "*.txt" {
 	const value: string;

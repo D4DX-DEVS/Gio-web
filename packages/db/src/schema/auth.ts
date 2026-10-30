@@ -95,3 +95,20 @@ export const twoFactor = sqliteTable(
     index("two_factor_user_id_idx").on(t.userId),
   ],
 );
+
+// Admin login protection (apps/web/src/lib/admin/login-throttle.ts, apps/web/src/lib/auth.ts).
+// Not Better Auth models; the adapter ignores them.
+
+/** Failed admin sign-in counters, shared by every Worker instance. `key` is "ip:<hmac>" or "global". */
+export const adminLoginThrottle = sqliteTable("admin_login_throttle", {
+  key: text("key").primaryKey(),
+  failures: integer("failures").notNull().default(0),
+  windowStart: integer("window_start").notNull(),
+  lockedUntil: integer("locked_until").notNull().default(0),
+});
+
+/** One row (id 1): the last accepted TOTP time step, so a code cannot be used twice. */
+export const adminTotpState = sqliteTable("admin_totp_state", {
+  id: integer("id").primaryKey(),
+  lastStep: integer("last_step").notNull().default(0),
+});
