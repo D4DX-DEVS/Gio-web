@@ -18,10 +18,9 @@ To stop a server, press Ctrl+C in its window. If port 8787 stays busy after stop
 ## Admin login (local only)
 
 - URL: http://localhost:3000/admin/login/
-- The email and password of the local owner account are in `C:\dev\gio-kerala-web\apps\web\.env.admin-login` (git-ignored, never committed).
-- There is no public sign-up. To create another account or reset a password:
-  `cd C:\dev\gio-kerala-web\apps\web` then `node scripts/create-admin.mjs --email someone@example.org --name "Name" --role editor`
-  (roles: owner, admin, editor, contributor; a password is generated and printed once if you do not pass `--password`).
+- The only admin login is `ADMIN_USERNAME` / `ADMIN_PASSWORD` in `C:\dev\gio-kerala-web\apps\web\.dev.vars` (git-ignored). Database accounts cannot sign in, and there is no sign-up. Restart `pnpm dev` after changing the file.
+- Two-factor: set `ADMIN_TOTP_SECRET` (make one with `node scripts/generate-totp-secret.mjs`) to require an authenticator code. Optional under `pnpm dev`; production builds, including `pnpm preview`, refuse to sign in without it.
+- After 5 wrong attempts from one address (or 50 overall) sign-in answers HTTP 429 for 15 minutes.
 
 ## Suggested demo path (about 10 minutes)
 
