@@ -26,7 +26,8 @@ export const viewport: Viewport = { themeColor: "#185c9a" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} ${malayalam.variable} ${poppins.variable} antialiased`}>
+    // data-scroll-behavior: Next.js turns smooth scrolling off during route changes (globals.css sets it on html).
+    <html lang="en" data-scroll-behavior="smooth" className={`${inter.variable} ${malayalam.variable} ${poppins.variable} antialiased`}>
       <body className="min-h-screen flex flex-col">{children}</body>
     </html>
   );

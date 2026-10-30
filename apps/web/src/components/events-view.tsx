@@ -3,7 +3,7 @@ import { schema } from "@gio/db";
 import { eq } from "drizzle-orm";
 import { listEvents } from "@/lib/content";
 import { getDb } from "@/lib/db";
-import { Container, EmptyState, EventCard, PageHero } from "./ui";
+import { Container, EmptyState, EventCard, PageHero, SectionHeading } from "./ui";
 
 export async function EventsView({ category }: { category?: string }) {
   let title = "Events";
@@ -18,12 +18,14 @@ export async function EventsView({ category }: { category?: string }) {
   return (
     <>
       <PageHero title={title} eyebrow="Programmes & camps" crumbs={[{ href: "/events/", label: "Events" }]} />
-      <Container className="py-14">
-        <h2 className="mb-6 font-display text-2xl font-bold text-brand-900">Upcoming</h2>
+      <Container className="py-10 sm:py-14">
+        <SectionHeading eyebrow="What's next" title="Upcoming" />
         {upcoming.length ? (
-          <div className="grid gap-5 lg:grid-cols-2">
+          <div className="grid gap-4 sm:gap-5 lg:grid-cols-2">
             {upcoming.map((e) => (
-              <EventCard key={e.id} event={e} />
+              <div key={e.id} data-reveal>
+                <EventCard event={e} />
+              </div>
             ))}
           </div>
         ) : (
@@ -31,10 +33,14 @@ export async function EventsView({ category }: { category?: string }) {
         )}
         {past.length > 0 && (
           <>
-            <h2 className="mb-6 mt-14 font-display text-2xl font-bold text-brand-900">Past events</h2>
-            <div className="grid gap-5 lg:grid-cols-2">
+            <div className="mt-12 sm:mt-14">
+              <SectionHeading eyebrow="Archive" title="Past events" />
+            </div>
+            <div className="grid gap-4 sm:gap-5 lg:grid-cols-2">
               {past.map((e) => (
-                <EventCard key={e.id} event={e} />
+                <div key={e.id} data-reveal>
+                  <EventCard event={e} />
+                </div>
               ))}
             </div>
           </>

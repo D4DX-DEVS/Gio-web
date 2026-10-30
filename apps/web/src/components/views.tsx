@@ -6,8 +6,9 @@ import { sanitize } from "@/lib/sanitize";
 import { formatDate, langOf, stripHtml } from "@/lib/text";
 import { SocialIcon } from "./Icons";
 import { Img } from "./Img";
+import { LightboxScope } from "./LightboxScope";
 import { Sections } from "./Sections";
-import { Container, EmptyState, PageHero, Pagination, PostCard } from "./ui";
+import { Container, EmptyState, PageHero, Pagination, PostCard, SectionHeading } from "./ui";
 
 const LEADER_NAV = [
   { href: "/team/", label: "State Leaders", scope: "state" },
@@ -42,7 +43,7 @@ export async function LeadersPage({ page }: { page: PageRow }) {
     <>
       <PageHero title={page.title} eyebrow="Our Leaders" crumbs={[{ href: `/${page.slug}/`, label: page.title }]} />
       <div className="sticky top-[68px] z-30 border-b border-line bg-white/90 backdrop-blur md:top-[96px]">
-        <Container className="flex gap-2 overflow-x-auto py-3">
+        <Container className="flex gap-2 overflow-x-auto py-3 [scrollbar-width:none]">
           {LEADER_NAV.map((l) => (
             <Link key={l.href} href={l.href} aria-current={l.scope === scope ? "page" : undefined} className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition ${l.scope === scope ? "bg-brand-600 text-white" : "bg-brand-50 text-brand-700 hover:bg-brand-100"}`}>
               {l.label}
@@ -50,7 +51,7 @@ export async function LeadersPage({ page }: { page: PageRow }) {
           ))}
         </Container>
       </div>
-      <Container className="py-14">
+      <Container className="py-10 sm:py-14">
         {!total && <EmptyState title="No leaders published for this page yet." />}
         {scope === "former" ? (
           <div className="relative space-y-12 border-l-2 border-brand-100 pl-6 sm:pl-10">
@@ -81,13 +82,13 @@ function LeaderGrid({ leaders, compact = false, featuredFirst = false }: { leade
   return (
     <>
       {featured.length > 0 && (
-        <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:mx-auto lg:max-w-3xl">
+        <div className="mb-8 grid grid-cols-2 gap-4 sm:gap-6 lg:mx-auto lg:max-w-3xl">
           {featured.map((l) => (
             <LeaderCard key={l.id} l={l} large />
           ))}
         </div>
       )}
-      <div className={`grid gap-5 ${compact ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5" : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"}`}>
+      <div className={`grid gap-3 sm:gap-5 ${compact ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5" : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4"}`}>
         {rest.map((l) => (
           <LeaderCard key={l.id} l={l} />
         ))}
@@ -98,9 +99,9 @@ function LeaderGrid({ leaders, compact = false, featuredFirst = false }: { leade
 
 function LeaderCard({ l, large = false }: { l: Awaited<ReturnType<typeof getLeaderGroups>>[number]["leaders"][number]; large?: boolean }) {
   return (
-    <article className="group overflow-hidden rounded-2xl border border-line bg-white text-center shadow-sm transition hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-900/10">
+    <article data-reveal className="card-lift group h-full overflow-hidden rounded-2xl border border-line bg-white text-center shadow-card">
       <div className="aspect-square overflow-hidden bg-brand-50">
-        <Img media={l.photo} alt={l.name} className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105" fallbackLabel={`No photo published for ${l.name}`} />
+        <Img media={l.photo} alt={l.name} className="zoom-media h-full w-full object-cover object-top" fallbackLabel={`No photo published for ${l.name}`} />
       </div>
       <div className={large ? "p-5" : "p-3 sm:p-4"}>
         <h3 lang={langOf(l.name)} className={`font-display font-semibold leading-snug text-brand-900 ${large ? "text-lg" : "text-sm sm:text-base"}`}>
@@ -175,20 +176,20 @@ export function PostGrid({
   return (
     <>
       <PageHero title={title} eyebrow={eyebrow} image={image} crumbs={[{ href: base, label: title }]} subtitle={page > 1 ? `Page ${page} of ${pages}` : undefined} />
-      <Container className="py-14">
+      <Container className="py-10 sm:py-14">
         {tabs && (
-          <div className="mb-10 flex flex-wrap gap-2">
+          <nav aria-label="Filter stories" className="mb-8 flex flex-wrap gap-2 sm:mb-10">
             {tabs.map((t) => (
-              <Link key={t.href} href={t.href} aria-current={t.href === current ? "page" : undefined} className={`rounded-full px-4 py-2 text-sm font-semibold transition ${t.href === current ? "bg-brand-600 text-white" : "bg-brand-50 text-brand-700 hover:bg-brand-100"}`}>
+              <Link key={t.href} href={t.href} aria-current={t.href === current ? "page" : undefined} className={`inline-flex h-10 items-center rounded-full px-4 text-sm font-semibold transition ${t.href === current ? "bg-brand-600 text-white shadow-card" : "bg-brand-50 text-brand-700 hover:bg-brand-100"}`}>
                 {t.label}
               </Link>
             ))}
-          </div>
+          </nav>
         )}
         {items.length ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {items.map((p, i) => (
-              <div key={p.id} className="animate-fade-up" style={{ animationDelay: `${Math.min(i, 8) * 50}ms` }}>
+          <div className="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+            {items.map((p) => (
+              <div key={p.id} data-reveal>
                 <PostCard post={p} />
               </div>
             ))}
@@ -214,8 +215,8 @@ export async function PostPage({ slug }: { slug: string }) {
       <header className="relative overflow-hidden bg-brand-900 text-white">
         {card.image && <Img media={card.image} alt="" eager className="absolute inset-0 h-full w-full scale-110 object-cover opacity-20 blur-sm" />}
         <div className="absolute inset-0 bg-gradient-to-b from-brand-900/60 to-brand-900" />
-        <Container className="relative max-w-4xl py-14 sm:py-20">
-          <nav aria-label="Breadcrumb" className="mb-5 text-sm text-brand-200">
+        <Container className="relative max-w-4xl py-12 sm:py-16">
+          <nav aria-label="Breadcrumb" className="mb-5 animate-fade-in text-sm text-brand-200">
             <Link href="/" className="hover:text-white">
               Home
             </Link>
@@ -230,7 +231,7 @@ export async function PostPage({ slug }: { slug: string }) {
               </Link>
             )}
           </nav>
-          <h1 lang={langOf(title)} className="animate-fade-up font-display text-3xl font-bold leading-tight sm:text-5xl sm:leading-tight">
+          <h1 lang={langOf(title)} className="animate-fade-up text-balance font-display text-3xl font-bold leading-tight sm:text-[2.75rem] sm:leading-tight">
             {title}
           </h1>
           {post.publishedAt && (
@@ -240,17 +241,20 @@ export async function PostPage({ slug }: { slug: string }) {
           )}
         </Container>
       </header>
-      <Container className="max-w-4xl py-12">
-        {card.image && (
-          <figure className="-mt-24 mb-10 overflow-hidden rounded-2xl shadow-2xl shadow-brand-900/20 ring-1 ring-line sm:-mt-28">
-            <Img media={card.image} eager className="h-auto w-full" />
-          </figure>
-        )}
-        {body ? <div lang={langOf(stripHtml(body, 400))} className="prose-gio" dangerouslySetInnerHTML={{ __html: body }} /> : <EmptyState title="This post has no text." />}
+      <Container className="max-w-4xl py-10 sm:py-12">
+        {/* The featured photo and photos in the text open full size in the lightbox. */}
+        <LightboxScope>
+          {card.image && (
+            <figure className="mb-10 overflow-hidden rounded-2xl shadow-pop ring-1 ring-line sm:-mt-24">
+              <Img media={card.image} eager className="h-auto w-full" />
+            </figure>
+          )}
+          {body ? <div lang={langOf(stripHtml(body, 400))} className="prose-gio" dangerouslySetInnerHTML={{ __html: body }} /> : <EmptyState title="This post has no text." />}
+        </LightboxScope>
         {tags.length > 0 && (
           <div className="mt-10 flex flex-wrap gap-2 border-t border-line pt-6">
             {tags.map((t) => (
-              <Link key={t.slug} href={`/tag/${encodeURIComponent(t.slug)}/`} className="rounded-full bg-brand-50 px-3 py-1 text-sm text-brand-700 hover:bg-brand-100">
+              <Link key={t.slug} href={`/tag/${encodeURIComponent(t.slug)}/`} lang={langOf(t.name)} className="rounded-full bg-brand-50 px-3 py-1.5 text-sm text-brand-700 transition-colors hover:bg-brand-100">
                 #{t.name}
               </Link>
             ))}
@@ -258,12 +262,14 @@ export async function PostPage({ slug }: { slug: string }) {
         )}
       </Container>
       {related.length > 0 && (
-        <section className="bg-paper py-14">
+        <section className="bg-paper py-12 sm:py-14">
           <Container>
-            <h2 className="mb-8 font-display text-2xl font-bold text-brand-900">More stories</h2>
-            <div className="grid gap-6 md:grid-cols-3">
+            <SectionHeading eyebrow="Keep reading" title="More stories" action={{ href: "/news-events/", label: "All news" }} />
+            <div className="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
               {related.map((p) => (
-                <PostCard key={p.id} post={p} />
+                <div key={p.id} data-reveal>
+                  <PostCard post={p} />
+                </div>
               ))}
             </div>
           </Container>

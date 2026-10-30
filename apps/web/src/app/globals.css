@@ -19,8 +19,13 @@
   --color-muted: #5b6573;
   --color-line: #e3e8ef;
   --color-paper: #f7f9fc;
-  --animate-fade-up: fade-up 0.6s ease-out both;
-  --animate-fade-in: fade-in 0.8s ease-out both;
+  /* Elevation and motion tokens shared by cards, buttons, menus and dialogs. */
+  --shadow-card: 0 1px 2px rgb(11 41 68 / 0.05), 0 1px 3px rgb(11 41 68 / 0.06);
+  --shadow-lift: 0 14px 32px -12px rgb(11 41 68 / 0.22), 0 4px 10px -4px rgb(11 41 68 / 0.08);
+  --shadow-pop: 0 24px 60px -16px rgb(11 41 68 / 0.35);
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-fade-up: fade-up 0.6s var(--ease-soft) both;
+  --animate-fade-in: fade-in 0.6s ease-out both;
 }
 
 @theme inline {
@@ -43,7 +48,14 @@
   to { opacity: 1; }
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  /* Anchor targets land below the sticky header. */
+  scroll-padding-top: 6rem;
+}
+
+/* Native <dialog> modals (Modal.tsx): keep the page behind them from scrolling. */
+html:has(dialog[open]) { overflow: hidden; }
 
 body {
   background: #fff;
@@ -51,6 +63,90 @@ body {
   font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
 }
+
+/* Malayalam has long words and stacked conjuncts: never let a title push the layout sideways,
+   and give it a little more line height than Latin text. */
+@layer base {
+  :where(h1, h2, h3, h4, p, li, a, span):lang(ml) { overflow-wrap: anywhere; }
+  :where(h1, h2, h3, h4):lang(ml) { line-height: 1.45; }
+
+  :where(a, button, summary, img, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
+}
+
+/* Section entrance: a gentle fade and slide as a block scrolls into view. Pure CSS
+   (scroll-driven), so content already in view is never hidden waiting for JavaScript and
+   browsers without support simply show it. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    [data-reveal] {
+      animation: reveal linear both;
+      animation-timeline: view();
+      /* Fully visible 200px after the top edge appears, however tall the block is. */
+      animation-range: entry 0% entry 200px;
+    }
+  }
+}
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Sticky header gains a shadow once the page has scrolled (scroll-driven, no JavaScript). */
+@supports (animation-timeline: scroll()) {
+  .header-shadow {
+    animation: header-shadow linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 120px;
+  }
+}
+@keyframes header-shadow {
+  from { box-shadow: 0 0 0 rgb(11 41 68 / 0); }
+  to { box-shadow: 0 8px 24px -12px rgb(11 41 68 / 0.25); }
+}
+
+@media print {
+  [data-reveal], .header-shadow { animation: none !important; }
+}
+
+/* Cards: one hover language for every clickable card on the site. */
+@layer components {
+  .card-lift { transition: transform 0.3s var(--ease-soft), box-shadow 0.3s var(--ease-soft); }
+  .card-lift:hover, .card-lift:focus-within { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+  .zoom-media { transition: transform 0.6s var(--ease-soft); }
+  .group:hover .zoom-media, .group:focus-within .zoom-media { transform: scale(1.05); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card-lift:hover, .card-lift:focus-within { transform: none; }
+  .group:hover .zoom-media, .group:focus-within .zoom-media { transform: none; }
+}
+
+/* Modals and the lightbox (components/Modal.tsx). Opening fades and lifts in; closing
+   fades out where the browser supports animating the top layer. */
+@layer components {
+  /* Layered so that the placement utilities in Modal.tsx (width, height, margin, background) win. */
+  dialog.modal { max-width: none; max-height: none; padding: 0; border: 0; background: transparent; color: inherit; }
+  dialog.modal::backdrop { background: rgb(8 24 40 / 0.78); backdrop-filter: blur(3px); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  dialog.modal, dialog.modal::backdrop {
+    transition: opacity 0.22s ease, transform 0.22s var(--ease-soft), overlay 0.22s allow-discrete, display 0.22s allow-discrete;
+    opacity: 0;
+  }
+  dialog.modal { transform: translateY(10px) scale(0.985); }
+  dialog.modal[open], dialog.modal[open]::backdrop { opacity: 1; transform: none; }
+  dialog.modal-drawer { transform: translateX(24px); }
+  @starting-style {
+    dialog.modal[open], dialog.modal[open]::backdrop { opacity: 0; }
+    dialog.modal[open] { transform: translateY(10px) scale(0.985); }
+    dialog.modal-drawer[open] { transform: translateX(24px); }
+  }
+}
+
+/* Images that open in the lightbox (components/LightboxScope.tsx). */
+[data-zoomable] { cursor: zoom-in; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -88,7 +184,8 @@ body {
 .field { display: block; width: 100%; border: 1px solid #cfd8e3; border-radius: 0.5rem; padding: 0.55rem 0.75rem; background: #fff; font-size: 0.95rem; }
 .field:focus { outline: 2px solid var(--color-brand-400); outline-offset: 1px; border-color: var(--color-brand-400); }
 .label { display: block; font-size: 0.8rem; font-weight: 600; color: #3b4655; margin-bottom: 0.3rem; }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 0.5rem; padding: 0.5rem 1rem; font-size: 0.9rem; font-weight: 600; transition: background-color 0.15s; cursor: pointer; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 0.5rem; padding: 0.5rem 1rem; font-size: 0.9rem; font-weight: 600; transition: background-color 0.15s, border-color 0.15s, color 0.15s, transform 0.1s; cursor: pointer; }
+.btn:active:not(:disabled) { transform: scale(0.97); }
 .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 .btn-primary { background: var(--color-brand-600); color: #fff; }
 .btn-primary:hover { background: var(--color-brand-700); }

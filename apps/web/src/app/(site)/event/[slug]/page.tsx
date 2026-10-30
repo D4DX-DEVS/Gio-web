@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CalendarIcon, PinIcon } from "@/components/Icons";
 import { Img } from "@/components/Img";
+import { LightboxScope } from "@/components/LightboxScope";
 import { Container, PageHero } from "@/components/ui";
 import { getPublishedEvent } from "@/lib/content";
 import { sanitize } from "@/lib/sanitize";
@@ -23,23 +24,23 @@ export default async function EventPage({ params }: PageProps<"/event/[slug]">) 
   return (
     <>
       <PageHero title={event.title} eyebrow="Event" crumbs={[{ href: "/events/", label: "Events" }]} />
-      <Container className="grid gap-10 py-14 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-        <div>
+      <Container className="grid gap-8 py-10 sm:py-14 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-10">
+        <LightboxScope className="min-w-0">
           {image && (
-            <figure className="mb-8 overflow-hidden rounded-2xl shadow-xl shadow-brand-900/10 ring-1 ring-line">
+            <figure className="mb-8 overflow-hidden rounded-2xl shadow-lift ring-1 ring-line">
               <Img media={image} eager className="h-auto w-full" />
             </figure>
           )}
           {body && <div lang={langOf(stripHtml(body, 300))} className="prose-gio" dangerouslySetInnerHTML={{ __html: body }} />}
           {report && (
             <p className="mt-8">
-              <Link href={postHref(report.slug)} className="btn btn-primary">
+              <Link href={postHref(report.slug)} lang={langOf(report.title)} className="btn btn-primary !rounded-full !px-5 !py-3 text-left">
                 Read the report: {report.title}
               </Link>
             </p>
           )}
-        </div>
-        <aside className="h-fit space-y-5 rounded-2xl border border-line bg-paper p-6 lg:sticky lg:top-28">
+        </LightboxScope>
+        <aside aria-label="Event details" className="h-fit space-y-5 rounded-2xl border border-line bg-paper p-5 shadow-card sm:p-6 lg:sticky lg:top-32">
           <div className="flex gap-3">
             <CalendarIcon className="mt-0.5 h-5 w-5 shrink-0 text-brand-500" />
             <div>
@@ -61,7 +62,7 @@ export default async function EventPage({ params }: PageProps<"/event/[slug]">) 
               <PinIcon className="mt-0.5 h-5 w-5 shrink-0 text-brand-500" />
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-muted">Where</p>
-                <p className="font-medium">{venue.name}</p>
+                <p lang={langOf(venue.name)} className="font-medium">{venue.name}</p>
                 <p className="text-sm text-muted">{[venue.address, venue.city, venue.state, venue.postalCode].filter(Boolean).join(", ")}</p>
               </div>
             </div>
@@ -72,11 +73,11 @@ export default async function EventPage({ params }: PageProps<"/event/[slug]">) 
             </p>
           )}
           {event.registrationUrl && (
-            <a href={event.registrationUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary w-full">
+            <a href={event.registrationUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary w-full !rounded-full !py-3">
               Register
             </a>
           )}
-          <Link href="/events/" className="btn btn-ghost w-full">
+          <Link href="/events/" className="btn btn-ghost w-full !rounded-full !py-3">
             ← All events
           </Link>
         </aside>
