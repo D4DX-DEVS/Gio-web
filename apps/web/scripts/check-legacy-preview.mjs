@@ -38,11 +38,13 @@ const check = (group, name, pass, detail = "") => {
 const req = (p, init = {}) => fetch(BASE + p, { redirect: "manual", ...init });
 const local = (u) => new URL(u).pathname + new URL(u).search;
 
-// 1. All 139 audited URLs: no redirect, no 410, nothing from the legacy layer
+// 1. All 139 audited URLs: verified ones answer 200 from the app; pending ones get no redirect
+//    and no 410 (the app has no page for them, so 404). Nothing comes from the legacy layer.
 for (const r of urlMap) {
   const res = await req(local(r.old_url));
   const legacy = res.headers.get("x-legacy-rule");
-  check("urls", `${r.action} ${r.old_path}`, ![301, 302, 307, 308, 410].includes(res.status) && !legacy, `${res.status} ${legacy ?? ""}`);
+  const ok = r.action === "same_path" ? res.status === 200 : ![301, 302, 307, 308, 410].includes(res.status);
+  check("urls", `${r.action} ${r.old_path}`, ok && !legacy, `${res.status} ${legacy ?? ""}`);
   await res.body?.cancel();
 }
 
