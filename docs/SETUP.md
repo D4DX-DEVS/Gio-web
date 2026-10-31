@@ -2,6 +2,7 @@
 
 - **Date:** 27 October 2026 (updated 28 October 2026)
 - **Status:** the local workspace exists at `C:\dev\gio-kerala` (phase 1 on branch `phase-1/foundation-spikes`; the legacy URL and media layer on `phase-2/legacy-url-layer`). There are still no Cloudflare resources and nothing is deployed. Installed versions, test results and deviations from the steps below are in `docs/architecture/PHASE_1_SPIKE_RESULTS.md`; the custom Worker entry is described in `docs/architecture/LEGACY_URL_AND_MEDIA_LAYER.md`.
+- **Note (31 October 2026):** this is the original setup log, kept for its decisions and reasoning. For current setup and commands, use the root `README.md` and `PROJECT_STRUCTURE.md`. Since 31 October all work is on one branch, `main`; the importer has moved from `tools/migrate` to `apps/importer`, and the audit scripts from `migration/scripts-*` to `scripts/wordpress-audit/`.
 - **Read first:** `docs/audit/04-STATUS-AND-DECISIONS.md` (blocking decisions), `docs/audit/05-MIGRATION-DESIGN.md` (architecture), `docs/audit/d1-schema-proposal.sql`.
 
 Everything in this file runs on the developer machine only. Commands that create or change anything in a Cloudflare account are listed separately in §7 and must not be run until decision C1 (Cloudflare account access) is answered.

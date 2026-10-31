@@ -1,4 +1,4 @@
-# WordPress importer (`tools/migrate`)
+# WordPress importer (`apps/importer`)
 
 Implements the pipeline in `docs/audit/05-MIGRATION-DESIGN.md` §3 for the sources available today: the frozen public snapshot (`migration/snapshot-2026-10-27/`) and `docs/audit/inventory/url_map.csv`. Everything runs locally. Nothing writes to the live WordPress site or to a Cloudflare account.
 
@@ -8,13 +8,13 @@ Run from the repository root:
 
 ```powershell
 pnpm install
-pnpm --filter @gio/migrate exec tsx src/cli.ts build              # snapshot -> migration/staging/<snapshot>/bundle.json (offline)
-pnpm --filter @gio/migrate exec tsx src/cli.ts files --dry-run    # show which files would be fetched
-pnpm --filter @gio/migrate exec tsx src/cli.ts files --yes        # GET public uploads into migration/media-cache/ (once; cached files are skipped)
-pnpm --filter @gio/migrate exec tsx src/cli.ts load               # bundle + cache -> local D1 + R2 (applies migrations first)
-pnpm --filter @gio/migrate exec tsx src/cli.ts verify             # checks + migration/migration-reports/latest.md
-pnpm --filter @gio/migrate exec tsx src/cli.ts all                # build + load + verify (does not fetch files)
-pnpm --filter @gio/migrate test                                   # unit, build and load tests
+pnpm --filter @gio/importer exec tsx src/cli.ts build              # snapshot -> migration/staging/<snapshot>/bundle.json (offline)
+pnpm --filter @gio/importer exec tsx src/cli.ts files --dry-run    # show which files would be fetched
+pnpm --filter @gio/importer exec tsx src/cli.ts files --yes        # GET public uploads into migration/media-cache/ (once; cached files are skipped)
+pnpm --filter @gio/importer exec tsx src/cli.ts load               # bundle + cache -> local D1 + R2 (applies migrations first)
+pnpm --filter @gio/importer exec tsx src/cli.ts verify             # checks + migration/migration-reports/latest.md
+pnpm --filter @gio/importer exec tsx src/cli.ts all                # build + load + verify (does not fetch files)
+pnpm --filter @gio/importer test                                   # unit, build and load tests
 ```
 
 Options: `--snapshot DIR`, `--bundle FILE`, `--cache DIR`, `--persist DIR` (default `apps/web/.wrangler/state`, the web app's local Miniflare state), `--out DIR`, `--dry-run` (for `load`: loads into a throwaway in-memory database).

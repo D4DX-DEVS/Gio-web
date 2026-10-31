@@ -2,14 +2,14 @@
 
 Everything here runs on this computer only. Nothing is deployed, and the live WordPress site at giokerala.org was never changed.
 
-## Two local servers
+## Two ways to run it
 
-| What | Folder and branch | Start command | Open |
-|---|---|---|---|
-| Public website **and admin dashboard** | `C:\dev\gio-kerala-web`, branch `phase-3/website` | `cd C:\dev\gio-kerala-web` then `pnpm dev` | http://localhost:3000 and http://localhost:3000/admin/ |
-| Public website as it will run on Cloudflare (Workers runtime, legacy URL and old-image layer) | `C:\dev\gio-kerala`, branch `integration/demo` | `cd C:\dev\gio-kerala` then `pnpm preview` | http://localhost:8787 |
+Both run from the one project folder (`gio-kerala`, branch `main`). See the root `README.md` for first-time setup.
 
-The admin dashboard is only in the first one until it is committed and merged (see "Outstanding").
+| What | Start command | Open |
+|---|---|---|
+| Public website **and admin dashboard** (development server) | `pnpm dev` | http://localhost:3000 and http://localhost:3000/admin/ |
+| Public website as it will run on Cloudflare (Workers runtime, legacy URL and old-image layer) | `pnpm preview` | http://localhost:8787 |
 
 `pnpm dev` takes a few seconds to start. The first visit to each page compiles it, which can take 10 to 30 seconds on this machine; later visits are fast. Open the pages you will show once before the presentation.
 
@@ -18,7 +18,7 @@ To stop a server, press Ctrl+C in its window. If port 8787 stays busy after stop
 ## Admin login (local only)
 
 - URL: http://localhost:3000/admin/login/
-- The only admin login is `ADMIN_USERNAME` / `ADMIN_PASSWORD` in `C:\dev\gio-kerala-web\apps\web\.dev.vars` (git-ignored). Database accounts cannot sign in, and there is no sign-up. Restart `pnpm dev` after changing the file.
+- The only admin login is `ADMIN_USERNAME` / `ADMIN_PASSWORD` in `apps/web/.dev.vars` (git-ignored). Database accounts cannot sign in, and there is no sign-up. Restart `pnpm dev` after changing the file.
 - Two-factor: set `ADMIN_TOTP_SECRET` (make one with `node scripts/generate-totp-secret.mjs`) to require an authenticator code. Optional under `pnpm dev`; production builds, including `pnpm preview`, refuse to sign in without it.
 - After 5 wrong attempts from one address (or 50 overall) sign-in answers HTTP 429 for 15 minutes.
 
@@ -33,7 +33,7 @@ To stop a server, press Ctrl+C in its window. If port 8787 stays busy after stop
 7. **Gallery** (`/gallery/`), **Documents** (`/documents/`), **Contact** (`/contact-us/`, the form saves to the admin inbox).
 8. **Mobile**: narrow the browser window or use the phone view in developer tools (F12) to show the menu.
 9. **Admin**: sign in, show the dashboard counts and the client-review queue, open a post, edit its title, save as draft or publish, then show it on the public site. Show leaders, events, media library (upload an image), settings and the contact inbox. Sign out.
-10. **Old links** (on the Workers preview, http://localhost:8787, only): `/?p=2938` redirects to the Malayalam post `/കാൻവാസ്കാർഫ്/`; an old WordPress thumbnail name such as `/wp-content/uploads/2025/08/naqaba-90x90.jpg` is served by resizing the original. Check these once before the demo; the preview is run from `C:\dev\gio-kerala`.
+10. **Old links** (on the Workers preview, http://localhost:8787, only): `/?p=2938` redirects to the Malayalam post `/കാൻവാസ്കാർഫ്/`; an old WordPress thumbnail name such as `/wp-content/uploads/2025/08/naqaba-90x90.jpg` is served by resizing the original. Check these once before the demo.
 
 Tip: if you change content in the admin during the demo, it changes the local database only.
 
@@ -64,8 +64,6 @@ Re-running the importer does not create duplicates (each record has a stable sou
 
 ## Outstanding
 
-- **Commit approval:** the admin dashboard and the YouTube video cards are finished but not committed, because they were built by sessions that wait for your OK to commit. After approval they need to be committed on `phase-3/website` and merged into `integration/demo`, then `pnpm preview` rebuilt.
-- **Production build of the admin** has not been run yet (only type check and lint). The public site's production build passes.
 - **Client decisions:** the 70 old URLs waiting for a decision (author archives, theme demo pages), the 104 review items, the two draft PDFs, Cloudflare account and plan, email provider (password reset email), image resizing approach.
 - **Source files still missing:** WordPress database export or uploads archive (34 media items the public API does not list; 3 demo images already deleted on the old site).
 - **Before go-live:** two-factor login and Cloudflare Access for the admin, a rich-text editor (posts are edited as HTML today), spam protection (Turnstile) on the contact form, production Cloudflare resources.
