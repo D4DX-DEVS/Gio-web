@@ -1,10 +1,10 @@
 {
-  "name": "@gio/migrate",
+  "name": "@gio/importer",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "bin": {
-    "gio-migrate": "./src/cli.ts"
+    "gio-importer": "./src/cli.ts"
   },
   "scripts": {
     "start": "tsx src/cli.ts",

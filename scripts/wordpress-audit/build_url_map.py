@@ -1,7 +1,7 @@
 """Build docs/audit/inventory/url_map.csv and missing_from_media_api.csv from the audit inventories.
 
 Planning artifact only: reads local snapshot files, makes no network requests.
-Usage: python -I migration/scripts-plan/build_url_map.py <project-root>
+Usage: python -I scripts/wordpress-audit/build_url_map.py <project-root>
 """
 import csv
 import json

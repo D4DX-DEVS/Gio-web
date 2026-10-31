@@ -110,7 +110,7 @@ async function main() {
       return;
     }
     default:
-      log("usage: gio-migrate <build|files|load|verify|all> [--snapshot DIR] [--bundle FILE] [--cache DIR] [--persist DIR] [--dry-run] [--yes]");
+      log("usage: gio-importer <build|files|load|verify|all> [--snapshot DIR] [--bundle FILE] [--cache DIR] [--persist DIR] [--dry-run] [--yes]");
       process.exitCode = cmd ? 1 : 0;
   }
 }

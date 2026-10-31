@@ -16,7 +16,8 @@
     "typecheck": "pnpm -r typecheck",
     "db:generate": "pnpm --filter @gio/db generate",
     "db:migrate:local": "pnpm --filter web exec wrangler d1 migrations apply DB --local",
-    "test": "pnpm --filter web test",
+    "test": "pnpm --filter web test && pnpm --filter @gio/importer test",
+    "importer": "pnpm --filter @gio/importer start",
     "generate:legacy": "pnpm --filter web generate:legacy",
     "check:legacy": "pnpm --filter web check:legacy",
     "check:legacy-preview": "node apps/web/scripts/check-legacy-preview.mjs"

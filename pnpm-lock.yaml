@@ -82,7 +82,7 @@ importers:
         specifier: 5.9.3
         version: 5.9.3
 
-  tools/migrate:
+  apps/importer:
     dependencies:
       '@gio/db':
         specifier: workspace:*

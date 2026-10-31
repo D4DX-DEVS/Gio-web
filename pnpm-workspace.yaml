@@ -1,7 +1,6 @@
 packages:
   - apps/*
   - packages/*
-  - tools/*
 
 # Supply-chain guard: do not resolve versions published in the last 14 days
 # (value in minutes).

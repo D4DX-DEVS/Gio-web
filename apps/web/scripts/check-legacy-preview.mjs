@@ -2,7 +2,7 @@
 // (workerd, local bindings). Expectations are derived from the audit CSVs.
 // Usage (from apps/web): node scripts/check-legacy-preview.mjs [http://localhost:8787]
 //
-// Assumes the importer has loaded the media into local R2 (tools/migrate "load").
+// Assumes the importer has loaded the media into local R2 (apps/importer "load").
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

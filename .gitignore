@@ -26,14 +26,11 @@ secrets/
 
 # ---------------------------------------------------------------------------
 # Migration evidence and client data (personal data, never committed)
-# Only the audit/plan scripts and a README under migration/ are tracked.
+# Nothing under migration/ is tracked (the audit scripts live in scripts/wordpress-audit/).
 # Frozen snapshots, staging bundles, reports, the client's DB dump, WXR
 # export and uploads ZIP live locally and in the gio-private R2 bucket.
 # ---------------------------------------------------------------------------
 /migration/*
-!/migration/scripts-audit/
-!/migration/scripts-plan/
-!/migration/README.md
 # Anchored to the repo root on purpose: app code may legitimately have
 # folders such as app/wp-content/uploads/ (legacy media route) or admin/exports/.
 snapshot-*/
@@ -62,7 +59,7 @@ migration-reports/
 *dump*.sql
 *backup*.sql
 *export*.sql
-/tools/**/fixtures/private/
+/apps/importer/**/fixtures/private/
 
 # Archives (uploads ZIPs, backup bundles)
 *.zip
